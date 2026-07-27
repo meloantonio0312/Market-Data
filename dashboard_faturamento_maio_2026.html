@@ -853,10 +853,15 @@
             <th style="text-align:right">Usuários</th>
             <th style="text-align:right">Empresas</th>
             <th style="text-align:right">Ticket médio</th>
+            <th style="text-align:right">Margem (R$)</th>
+            <th style="text-align:right">Margem (%)</th>
           </tr>
         </thead>
         <tbody id="tbl-bolsas"></tbody>
       </table>
+      <p style="font-size:11px;color:#8FA3C4;margin-top:8px;line-height:1.5">
+        <b style="color:#D4AF37">Metodologia da Margem:</b> Margem = Receita direta (produtos de display/terminal) − Despesa de repasse ao fornecedor (Variável + Fixa, Jun/26), ratreada proporcionalmente dentro de cada fornecedor. Não inclui receita de pacotes agregados (Datafeed, combos Broadcast+) que também usam esses dados — a margem real tende a ser menos negativa do que o número isolado sugere. Fornecedores sem despesa direta mapeada (Deutsche Börse, CBOE, LME, S&P) aparecem como "n/d".
+      </p>
     </div>
   </div>
 
@@ -898,6 +903,24 @@ const bolsasData = [
   { name: 'Índices DJ',                      receita: 9072,    users: 431,  empresas: 154,  grupo: 'S&P' },
 ];
 
+// ── DESPESA POR FORNECEDOR (Var + Fixa, Jun/26 — do dashboard de Despesas) ──
+const despesaPorFornecedor = {
+  'BM&FBOVESPA': 1203932.17,
+  'CME Group':   503424.35,
+  'ICE':         306985.58,
+  'Nasdaq':      146592.36,
+  'NYSE':        100103.85,
+  'FTSE':        35204.06,
+  'Euronext':    27882.83,
+  // Deutsche Börse, CBOE, LME e S&P não têm receita direta mapeada por bolsa — margem n/d
+};
+// Mapeia o 'grupo' de receita para o fornecedor de despesa correspondente
+const grupoParaFornecedor = {
+  'B3': 'BM&FBOVESPA', 'CBOT': 'CME Group', 'CME': 'CME Group',
+  'ICE US': 'ICE', 'ICE EU': 'ICE', 'NYSE': 'NYSE', 'FTSE': 'FTSE',
+  'Nasdaq': 'Nasdaq', 'Euronext': 'Euronext', 'S&P': null,
+};
+
 const grupoReceita = {};
 const grupoUsers = {};
 bolsasData.forEach(b => {
@@ -905,6 +928,18 @@ bolsasData.forEach(b => {
   grupoUsers[b.grupo]   = (grupoUsers[b.grupo]   || 0) + b.users;
 });
 const gruposSorted = Object.entries(grupoReceita).sort((a,b) => b[1]-a[1]);
+
+// ── Receita total por fornecedor (soma dos grupos mapeados) e % de margem ──
+const receitaPorFornecedor = {};
+Object.entries(grupoReceita).forEach(([grupo, rec]) => {
+  const fornecedor = grupoParaFornecedor[grupo];
+  if (fornecedor) receitaPorFornecedor[fornecedor] = (receitaPorFornecedor[fornecedor] || 0) + rec;
+});
+const margemPctPorFornecedor = {};
+Object.entries(receitaPorFornecedor).forEach(([fornecedor, rec]) => {
+  const desp = despesaPorFornecedor[fornecedor];
+  if (desp !== undefined) margemPctPorFornecedor[fornecedor] = (rec - desp) / rec;
+});
 
 
 
@@ -2040,8 +2075,23 @@ function renderBolsas() {
   let tbody = document.getElementById('tbl-bolsas');
   const sorted = [...bolsasData].sort((a,b) => b.receita - a.receita);
   const totRec = sorted.reduce((s,b) => s+b.receita, 0);
+  let totMargem = 0, totMargemAplicavel = 0;
   sorted.forEach(b => {
     let ticket = b.empresas > 0 ? b.receita / b.empresas : 0;
+    const fornecedor = grupoParaFornecedor[b.grupo];
+    const margemPct = fornecedor ? margemPctPorFornecedor[fornecedor] : undefined;
+    let margemCell, margemPctCell;
+    if (margemPct !== undefined) {
+      const margemR = b.receita * margemPct;
+      totMargem += margemR;
+      totMargemAplicavel += b.receita;
+      const cor = margemR >= 0 ? '#3DBE7B' : '#E05C5C';
+      margemCell = `<td style="text-align:right;font-weight:600;color:${cor}">${margemR >= 0 ? '+' : ''}${fmtR(margemR)}</td>`;
+      margemPctCell = `<td style="text-align:right;font-weight:600;color:${cor}">${(margemPct*100 >= 0 ? '+' : '')}${(margemPct*100).toFixed(1)}%</td>`;
+    } else {
+      margemCell = `<td style="text-align:right;opacity:.4">n/d</td>`;
+      margemPctCell = `<td style="text-align:right;opacity:.4">—</td>`;
+    }
     tbody.innerHTML += `<tr>
       <td>${b.name} <span style="font-size:10px;opacity:.6;margin-left:4px">${b.grupo}</span></td>
       <td style="text-align:right;font-weight:600">${fmtR(b.receita)}</td>
@@ -2049,11 +2099,13 @@ function renderBolsas() {
       <td style="text-align:right">${b.users.toLocaleString('pt-BR')}</td>
       <td style="text-align:right">${b.empresas}</td>
       <td style="text-align:right;color:#D4AF37">${fmtR(ticket)}</td>
+      ${margemCell}${margemPctCell}
     </tr>`;
   });
   // Total row
   const totUsers = sorted.reduce((s,b)=>s+b.users,0);
-  const totEmp = new Set(sorted.flatMap(b=>Array(b.empresas).fill(0))).size;
+  const totMargemPct = totMargemAplicavel > 0 ? totMargem / totMargemAplicavel * 100 : 0;
+  const corTot = totMargem >= 0 ? '#3DBE7B' : '#E05C5C';
   tbody.innerHTML += `<tr style="font-weight:700;border-top:2px solid var(--accent)">
     <td>TOTAL BOLSAS</td>
     <td style="text-align:right">${fmtR(totRec)}</td>
@@ -2061,6 +2113,8 @@ function renderBolsas() {
     <td style="text-align:right">${totUsers.toLocaleString('pt-BR')}</td>
     <td style="text-align:right">—</td>
     <td style="text-align:right">—</td>
+    <td style="text-align:right;color:${corTot}">${totMargem >= 0 ? '+' : ''}${fmtR(totMargem)}</td>
+    <td style="text-align:right;color:${corTot}">${(totMargemPct >= 0 ? '+' : '')}${totMargemPct.toFixed(1)}%</td>
   </tr>`;
 }
 
