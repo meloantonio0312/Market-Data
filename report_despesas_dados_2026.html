@@ -520,6 +520,11 @@
       <div style="margin-top:12px;background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.25);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:10px 14px;font-size:12.5px;color:var(--text-muted)">
         <b style="color:var(--gold)">📌 Nasdaq (Var) — Jun/26 +114% vs Mai/26:</b> variação decorrente de aumento no consumo de dados Nasdaq pela Broadcast. Crescimento orgânico de uso pelos produtos <strong>Nasdaq Total View</strong>, <strong>Nasdaq Smart Options NBBO</strong> e <strong>Nasdaq Data Link - Rest API</strong> — não representa anomalia contratual.
       </div>
+      <div style="margin-top:10px;background:rgba(224,92,92,.08);border:1px solid rgba(224,92,92,.35);border-left:3px solid #E05C5C;border-radius:0 8px 8px 0;padding:12px 16px;font-size:12.5px;color:var(--text-muted)">
+        <b style="color:#E05C5C">⚠️ Margem negativa identificada — CME Group e Nasdaq:</b> a receita direta atribuível a essas bolsas (produtos de display/terminal: BM&F/Bovespa Level I-II, CBOT, NYBOT, IPE, Índices) é <strong>menor que o custo de repasse variável do mês</strong>. CME Group: repasse R$ 376K vs. despesa R$ 432K (margem −R$ 56K). Nasdaq: repasse R$ 33K vs. despesa R$ 111K (margem −R$ 78K).
+        <br><br>
+        <b style="color:var(--text-primary)">Ressalva metodológica:</b> a coluna "Repasse" reflete apenas receita de produtos de cotação/display diretamente identificados por bolsa na fatura de junho/2026. Não inclui receita de pacotes agregados (Broadcast Datafeed, Broadcast+ combos) que também consomem esses dados mas não são discriminados por bolsa na fonte atual — a margem real tende a ser menos negativa do que o número isolado sugere. Recomenda-se tratar como <em>margem do produto de display</em>, não como P&L completo da bolsa.
+      </div>
     </div>
 
   </div>
@@ -681,6 +686,7 @@ const badgeH = vsO => {
 
 function buildMaiTable(id, data) {
   const t = document.getElementById(id);
+  const isVar = id === 'tMaiVar';
   const th = document.createElement('thead');
   th.innerHTML = `<tr>
     <th>Fornecedor / Bolsa</th>
@@ -691,16 +697,29 @@ function buildMaiTable(id, data) {
     <th>vs. Orçado</th>
     <th>Mai/25 Real</th>
     <th>vs. 2025</th>
+    ${isVar ? '<th>Repasse (Receita Bolsa)</th><th>Margem</th>' : ''}
     <th>Status</th>
   </tr>`;
   t.appendChild(th);
   const tb = document.createElement('tbody');
-  let tM = 0, tA = 0, tO = 0, tR25 = 0;
+  let tM = 0, tA = 0, tO = 0, tR25 = 0, tRep = 0, tRepCount = 0;
   [...data].sort((a, b) => b.mai - a.mai).forEach(r => {
     const vsA  = r.abr  ? (r.mai - r.abr)  / Math.abs(r.abr)  * 100 : null;
     const vsO  = r.orc  ? (r.mai - r.orc)  / Math.abs(r.orc)  * 100 : null;
     const vs25 = r.r25  ? (r.mai - r.r25)  / Math.abs(r.r25)  * 100 : null;
     tM += r.mai; tA += r.abr || 0; tO += r.orc || 0; tR25 += r.r25 || 0;
+    let repCell = '', margemCell = '';
+    if (isVar) {
+      if (r.repasse !== undefined) {
+        const margem = r.repasse - r.mai;
+        tRep += r.repasse; tRepCount++;
+        repCell = `<td class="mono dim">${fmtR(r.repasse)}</td>`;
+        margemCell = `<td class="mono" style="font-weight:700;color:${margem >= 0 ? 'var(--green)' : 'var(--red)'}">${margem >= 0 ? '+' : ''}${fmtR(margem)}</td>`;
+      } else {
+        repCell = `<td class="mono dim" style="opacity:.4">n/d</td>`;
+        margemCell = `<td class="mono dim" style="opacity:.4">—</td>`;
+      }
+    }
     const tr = document.createElement('tr');
     tr.innerHTML = `<td title="${r.name}">${r.name}</td>
       <td class="mono" style="font-weight:600">${fmtR(r.mai)}</td>
@@ -710,6 +729,7 @@ function buildMaiTable(id, data) {
       <td>${pctH(vsO)}</td>
       <td class="mono dim">${fmtR(r.r25)}</td>
       <td>${pctH(vs25)}</td>
+      ${isVar ? repCell + margemCell : ''}
       <td>${badgeH(vsO)}</td>`;
     tb.appendChild(tr);
   });
@@ -717,10 +737,18 @@ function buildMaiTable(id, data) {
   const tvO  = tO   ? (tM - tO)   / Math.abs(tO)   * 100 : 0;
   const tv25 = tR25 ? (tM - tR25) / Math.abs(tR25) * 100 : 0;
   const tr = document.createElement('tr'); tr.className = 'tr-tot';
+  let totRepCell = '', totMargemCell = '';
+  if (isVar) {
+    const tMargem = tRep - tM;
+    totRepCell = `<td>${fmtR(tRep)}</td>`;
+    totMargemCell = `<td style="color:${tMargem >= 0 ? 'var(--green)' : 'var(--red)'}">${tMargem >= 0 ? '+' : ''}${fmtR(tMargem)}</td>`;
+  }
   tr.innerHTML = `<td>Total</td>
     <td>${fmtR(tM)}</td><td>${fmtR(tA)}</td><td>${pctH(tvA)}</td>
     <td>${fmtR(tO)}</td><td>${pctH(tvO)}</td>
-    <td>${fmtR(tR25)}</td><td>${pctH(tv25)}</td><td></td>`;
+    <td>${fmtR(tR25)}</td><td>${pctH(tv25)}</td>
+    ${isVar ? totRepCell + totMargemCell : ''}
+    <td></td>`;
   tb.appendChild(tr);
   t.appendChild(tb);
 }
@@ -766,13 +794,13 @@ function buildYtdTable(id, data) {
 
 // ── DATA ──
 const maiVar = [
-  {name:'BM&FBOVESPA',    mai:1191932.17, abr:1257046.92, orc:1376989.89, r25:1336675.63},
-  {name:'CME Group',       mai:432016.91,  abr:402500.52,  orc:469948.81,  r25:413189.52},
-  {name:'ICE',             mai:270735.89,  abr:253140.31,  orc:310546.59,  r25:290013.89},
-  {name:'Nasdaq',          mai:110827.71,  abr:51731.06,   orc:55325.75,   r25:89369.05},
-  {name:'NYSE',            mai:37394.60,   abr:34517.89,   orc:40628.09,   r25:33430.26},
-  {name:'FTSE',            mai:28362.77,   abr:27208.66,   orc:5270.56,    r25:5042.70},
-  {name:'Euronext',        mai:20560.34,   abr:20454.30,   orc:23073.84,   r25:23011.85},
+  {name:'BM&FBOVESPA',    mai:1191932.17, abr:1257046.92, orc:1376989.89, r25:1336675.63, repasse:1752931},
+  {name:'CME Group',       mai:432016.91,  abr:402500.52,  orc:469948.81,  r25:413189.52,  repasse:376111},
+  {name:'ICE',             mai:270735.89,  abr:253140.31,  orc:310546.59,  r25:290013.89,  repasse:274321},
+  {name:'Nasdaq',          mai:110827.71,  abr:51731.06,   orc:55325.75,   r25:89369.05,   repasse:33119},
+  {name:'NYSE',            mai:37394.60,   abr:34517.89,   orc:40628.09,   r25:33430.26,   repasse:42541},
+  {name:'FTSE',            mai:28362.77,   abr:27208.66,   orc:5270.56,    r25:5042.70,    repasse:25336},
+  {name:'Euronext',        mai:20560.34,   abr:20454.30,   orc:23073.84,   r25:23011.85,   repasse:17153},
   {name:'Deutsche Börse',  mai:8778.54,    abr:7921.92,    orc:9895.79,    r25:9678.89},
   {name:'CBOE',            mai:5646.84,    abr:5187.32,    orc:5855.88,    r25:4038.52},
   {name:'LME',             mai:798.25,     abr:771.20,     orc:687.50,     r25:1075.52},
