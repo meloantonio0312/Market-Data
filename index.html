@@ -370,11 +370,14 @@
   <div class="brand">
     <div class="brand-icon">B</div>
     <div>
-      <div class="brand-name">Market Data & Automation</div>
-      <div class="brand-sub">Broadcast · Grupo Estado</div>
+      <div class="brand-name" data-en="Market Data & Automation">Market Data & Automation</div>
+      <div class="brand-sub" data-en="Broadcast · Estado Group">Broadcast · Grupo Estado</div>
     </div>
   </div>
   <div class="topbar-right">
+    <button class="theme-toggle" id="lang-toggle" onclick="toggleLang()" title="Switch language / Alternar idioma">
+      <span id="lang-label">PT</span>
+    </button>
     <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
       <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
       <span id="theme-label">Dark</span>
@@ -392,13 +395,13 @@
       <div class="sidebar-search">
         <div class="search-input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="nav-search" placeholder="Buscar (ex: ICE, fees...)" oninput="filterNav(this.value)">
+          <input type="text" id="nav-search" placeholder="Buscar (ex: ICE, fees...)" data-en-placeholder="Search (e.g. ICE, fees...)" oninput="filterNav(this.value)">
           <button class="search-clear" id="search-clear-btn" onclick="clearSearch()">✕</button>
         </div>
-        <div class="no-results" id="no-results">Nenhum resultado encontrado</div>
+        <div class="no-results" id="no-results" data-en="No results found">Nenhum resultado encontrado</div>
       </div>
 
-      <a class="nav-item active" style="padding-left:16px; font-weight:500;" onclick="show('overview')" href="#">
+      <a class="nav-item active" style="padding-left:16px; font-weight:500;" onclick="show('overview')" href="#" data-en="Executive Overview">
         <span style="font-size:13px">📊</span> Overview Executivo
       </a>
 
@@ -407,19 +410,19 @@
       <!-- Diretoria -->
       <div class="nav-group">
         <button class="nav-group-btn" onclick="toggleGroup(this)">
-          <span class="g-icon">👔</span><span class="g-label">Diretoria</span>
+          <span class="g-icon">👔</span><span class="g-label" data-en="Leadership">Diretoria</span>
           <span class="g-count">9</span><span class="chevron">▶</span>
         </button>
         <div class="nav-items">
-          <a class="nav-item" onclick="show('breakeven')" href="#"><span class="item-dot"></span> Breakeven por Produto</a>
-          <a class="nav-item" onclick="show('despesas')" href="#"><span class="item-dot"></span> Despesas Jun/2026</a>
-          <a class="nav-item" onclick="show('faturamento')" href="#"><span class="item-dot"></span> Faturamento Jun/2026</a>
-          <a class="nav-item" onclick="show('ice-contratos')" href="#"><span class="item-dot"></span> ICE Contratos Consolidados</a>
-          <a class="nav-item" onclick="show('ice-pipeline')" href="#"><span class="item-dot"></span> ICE Novas Fontes</a>
-          <a class="nav-item" onclick="show('exchange-map')" href="#"><span class="item-dot"></span> Mapa de Bolsas</a>
-          <a class="nav-item" onclick="show('agro-policies')" href="#"><span class="item-dot"></span> Políticas — Bolsas Agro</a>
-          <a class="nav-item" onclick="show('tam')" href="#"><span class="item-dot"></span> Oportunidade de Mercado</a>
-          <a class="nav-item" onclick="show('terminal-latam')" href="#"><span class="item-dot"></span> Terminal Latam / NUAM</a>
+          <a class="nav-item" data-en="Breakeven by Product" onclick="show('breakeven')" href="#"><span class="item-dot"></span> Breakeven por Produto</a>
+          <a class="nav-item" data-en="Expenses Jun/2026" onclick="show('despesas')" href="#"><span class="item-dot"></span> Despesas Jun/2026</a>
+          <a class="nav-item" data-en="Revenue Jun/2026" onclick="show('faturamento')" href="#"><span class="item-dot"></span> Faturamento Jun/2026</a>
+          <a class="nav-item" data-en="ICE Consolidated Contracts" onclick="show('ice-contratos')" href="#"><span class="item-dot"></span> ICE Contratos Consolidados</a>
+          <a class="nav-item" data-en="ICE New Sources" onclick="show('ice-pipeline')" href="#"><span class="item-dot"></span> ICE Novas Fontes</a>
+          <a class="nav-item" data-en="Exchange Map" onclick="show('exchange-map')" href="#"><span class="item-dot"></span> Mapa de Bolsas</a>
+          <a class="nav-item" data-en="Policies — Agro Exchanges" onclick="show('agro-policies')" href="#"><span class="item-dot"></span> Políticas — Bolsas Agro</a>
+          <a class="nav-item" data-en="Market Opportunity" onclick="show('tam')" href="#"><span class="item-dot"></span> Oportunidade de Mercado</a>
+          <a class="nav-item" data-en="Latam Terminal / NUAM" onclick="show('terminal-latam')" href="#"><span class="item-dot"></span> Terminal Latam / NUAM</a>
         </div>
       </div>
 
@@ -428,12 +431,12 @@
       <!-- Visão Mensal 2026 -->
       <div class="nav-group">
         <button class="nav-group-btn" onclick="toggleGroup(this)">
-          <span class="g-icon">📅</span><span class="g-label">Visão Mensal — 2026</span>
+          <span class="g-icon">📅</span><span class="g-label" data-en="Monthly View — 2026">Visão Mensal — 2026</span>
           <span class="g-count">2</span><span class="chevron">▶</span>
         </button>
         <div class="nav-items">
-          <a class="nav-item" onclick="show('despesas-mensal')" href="#"><span class="item-dot"></span> Despesas — Jan-Jun</a>
-          <a class="nav-item" onclick="show('fat-mensal')" href="#"><span class="item-dot"></span> Faturamento — Jan-Jun</a>
+          <a class="nav-item" data-en="Expenses — Jan-Jun" onclick="show('despesas-mensal')" href="#"><span class="item-dot"></span> Despesas — Jan-Jun</a>
+          <a class="nav-item" data-en="Revenue — Jan-Jun" onclick="show('fat-mensal')" href="#"><span class="item-dot"></span> Faturamento — Jan-Jun</a>
         </div>
       </div>
 
@@ -442,17 +445,17 @@
       <!-- Market Data -->
       <div class="nav-group">
         <button class="nav-group-btn" onclick="toggleGroup(this)">
-          <span class="g-icon">📡</span><span class="g-label">Market Data</span>
+          <span class="g-icon">📡</span><span class="g-label" data-en="Market Data">Market Data</span>
           <span class="g-count">7</span><span class="chevron">▶</span>
         </button>
         <div class="nav-items">
-          <a class="nav-item" onclick="show('team')" href="#"><span class="item-dot"></span> Estrutura do Time</a>
-          <a class="nav-item" onclick="show('hub-datafeeds')" href="#"><span class="item-dot"></span> HUB Datafeeds</a>
-          <a class="nav-item" onclick="show('licensing-process')" href="#"><span class="item-dot"></span> Processo de Licenciamento</a>
-          <a class="nav-item" onclick="show('datafeed-roadmap')" href="#"><span class="item-dot"></span> Roadmap Datafeed 2026–27</a>
-          <a class="nav-item" onclick="show('roadmap')" href="#"><span class="item-dot"></span> Roadmap Projetos 2026</a>
-          <a class="nav-item" onclick="show('automacao')" href="#"><span class="item-dot"></span> Sprint CoE Automação</a>
-          <a class="nav-item" onclick="show('sugestoes')" href="#"><span class="item-dot"></span> Sugestões de Clientes</a>
+          <a class="nav-item" data-en="Team Structure" onclick="show('team')" href="#"><span class="item-dot"></span> Estrutura do Time</a>
+          <a class="nav-item" data-en="Datafeeds HUB" onclick="show('hub-datafeeds')" href="#"><span class="item-dot"></span> HUB Datafeeds</a>
+          <a class="nav-item" data-en="Licensing Process" onclick="show('licensing-process')" href="#"><span class="item-dot"></span> Processo de Licenciamento</a>
+          <a class="nav-item" data-en="Datafeed Roadmap 2026–27" onclick="show('datafeed-roadmap')" href="#"><span class="item-dot"></span> Roadmap Datafeed 2026–27</a>
+          <a class="nav-item" data-en="Projects Roadmap 2026" onclick="show('roadmap')" href="#"><span class="item-dot"></span> Roadmap Projetos 2026</a>
+          <a class="nav-item" data-en="Automation CoE Sprint" onclick="show('automacao')" href="#"><span class="item-dot"></span> Sprint CoE Automação</a>
+          <a class="nav-item" data-en="Customer Suggestions" onclick="show('sugestoes')" href="#"><span class="item-dot"></span> Sugestões de Clientes</a>
         </div>
       </div>
 
@@ -461,16 +464,16 @@
       <!-- Vendas & Marketing -->
       <div class="nav-group">
         <button class="nav-group-btn" onclick="toggleGroup(this)">
-          <span class="g-icon">📊</span><span class="g-label">Cenário Competitivo</span>
+          <span class="g-icon">📊</span><span class="g-label" data-en="Competitive Landscape">Cenário Competitivo</span>
           <span class="g-count">6</span><span class="chevron">▶</span>
         </button>
         <div class="nav-items">
-          <a class="nav-item" onclick="show('bpipe')" href="#"><span class="item-dot"></span> Bloomberg B-PIPE — Matriz</a>
-          <a class="nav-item" onclick="show('inteligencia-mercado')" href="#"><span class="item-dot"></span> Broadcast+ vs Competidores</a>
-          <a class="nav-item" onclick="show('cma')" href="#"><span class="item-dot"></span> CMA vs Broadcast</a>
-          <a class="nav-item" onclick="show('economatica')" href="#"><span class="item-dot"></span> Economática vs Broadcast</a>
-          <a class="nav-item" onclick="show('nelogica')" href="#"><span class="item-dot"></span> Nelogica vs Broadcast</a>
-          <a class="nav-item" onclick="show('trillia')" href="#"><span class="item-dot"></span> Trillia vs Broadcast</a>
+          <a class="nav-item" data-en="Bloomberg B-PIPE — Matrix" onclick="show('bpipe')" href="#"><span class="item-dot"></span> Bloomberg B-PIPE — Matriz</a>
+          <a class="nav-item" data-en="Broadcast+ vs Competitors" onclick="show('inteligencia-mercado')" href="#"><span class="item-dot"></span> Broadcast+ vs Competidores</a>
+          <a class="nav-item" data-en="CMA vs Broadcast" onclick="show('cma')" href="#"><span class="item-dot"></span> CMA vs Broadcast</a>
+          <a class="nav-item" data-en="Economática vs Broadcast" onclick="show('economatica')" href="#"><span class="item-dot"></span> Economática vs Broadcast</a>
+          <a class="nav-item" data-en="Nelogica vs Broadcast" onclick="show('nelogica')" href="#"><span class="item-dot"></span> Nelogica vs Broadcast</a>
+          <a class="nav-item" data-en="Trillia vs Broadcast" onclick="show('trillia')" href="#"><span class="item-dot"></span> Trillia vs Broadcast</a>
         </div>
       </div>
 
@@ -479,17 +482,16 @@
       <!-- Marketing & Materiais -->
       <div class="nav-group">
         <button class="nav-group-btn" onclick="toggleGroup(this)">
-          <span class="g-icon">📣</span><span class="g-label">Marketing & Materiais</span>
-          <span class="g-count">7</span><span class="chevron">▶</span>
+          <span class="g-icon">📣</span><span class="g-label" data-en="Marketing & Materials">Marketing & Materiais</span>
+          <span class="g-count">6</span><span class="chevron">▶</span>
         </button>
         <div class="nav-items">
-          <a class="nav-item" onclick="show('fees-cheatsheet')" href="#"><span class="item-dot"></span> Cheatsheet de Fees</a>
-          <a class="nav-item" onclick="show('datafeed-visao')" href="#"><span class="item-dot"></span> Datafeed — Visão Geral</a>
-          <a class="nav-item" onclick="show('ice-pipeline')" href="#"><span class="item-dot"></span> ICE Novas Fontes</a>
-          <a class="nav-item" onclick="show('oferta-dados')" href="#"><span class="item-dot"></span> Infográfico Dados — Mai/26</a>
-          <a class="nav-item" onclick="show('oferta-jun2026')" href="#"><span class="item-dot"></span> Infográfico Dados — Jun/26</a>
-          <a class="nav-item" onclick="show('esg')" href="#"><span class="item-dot"></span> Levantamento ESG</a>
-          <a class="nav-item" onclick="show('agro-contribuintes')" href="#"><span class="item-dot"></span> Agro — Instrumentos & Contribuintes</a>
+          <a class="nav-item" data-en="Fees Cheatsheet" onclick="show('fees-cheatsheet')" href="#"><span class="item-dot"></span> Cheatsheet de Fees</a>
+          <a class="nav-item" data-en="Datafeed — Overview" onclick="show('datafeed-visao')" href="#"><span class="item-dot"></span> Datafeed — Visão Geral</a>
+          <a class="nav-item" data-en="Data Infographic — May/26" onclick="show('oferta-dados')" href="#"><span class="item-dot"></span> Infográfico Dados — Mai/26</a>
+          <a class="nav-item" data-en="Data Infographic — Jun/26" onclick="show('oferta-jun2026')" href="#"><span class="item-dot"></span> Infográfico Dados — Jun/26</a>
+          <a class="nav-item" data-en="ESG Market Research" onclick="show('esg')" href="#"><span class="item-dot"></span> Levantamento ESG</a>
+          <a class="nav-item" data-en="Agro — Instruments & Contributors" onclick="show('agro-contribuintes')" href="#"><span class="item-dot"></span> Agro — Instrumentos & Contribuintes</a>
         </div>
       </div>
 
@@ -498,12 +500,12 @@
       <!-- Produto -->
       <div class="nav-group">
         <button class="nav-group-btn" onclick="toggleGroup(this)">
-          <span class="g-icon">🧪</span><span class="g-label">Produto</span>
+          <span class="g-icon">🧪</span><span class="g-label" data-en="Product">Produto</span>
           <span class="g-count">2</span><span class="chevron">▶</span>
         </button>
         <div class="nav-items">
-          <a class="nav-item" onclick="show('derived-commodities')" href="#"><span class="item-dot"></span> Derived Data — Commodities</a>
-          <a class="nav-item" onclick="show('derived-macro')" href="#"><span class="item-dot"></span> Derived Data — Macro</a>
+          <a class="nav-item" data-en="Derived Data — Commodities" onclick="show('derived-commodities')" href="#"><span class="item-dot"></span> Derived Data — Commodities</a>
+          <a class="nav-item" data-en="Derived Data — Macro" onclick="show('derived-macro')" href="#"><span class="item-dot"></span> Derived Data — Macro</a>
         </div>
       </div>
 
@@ -512,11 +514,11 @@
       <!-- Comunicação -->
       <div class="nav-group">
         <button class="nav-group-btn" onclick="toggleGroup(this)">
-          <span class="g-icon">📰</span><span class="g-label">Comunicação</span>
+          <span class="g-icon">📰</span><span class="g-label" data-en="Communications">Comunicação</span>
           <span class="g-count">1</span><span class="chevron">▶</span>
         </button>
         <div class="nav-items">
-          <a class="nav-item" onclick="show('newsletter')" href="#"><span class="item-dot"></span> Newsletter Nov/Dez 2025</a>
+          <a class="nav-item" data-en="Newsletter Nov/Dec 2025" onclick="show('newsletter')" href="#"><span class="item-dot"></span> Newsletter Nov/Dez 2025</a>
         </div>
       </div>
 
@@ -770,9 +772,9 @@
     <div class="panel" id="p-datafeed-roadmap">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Market Data</div>
-          <div class="page-title">Roadmap Market Data 2026–2027</div>
-          <div class="page-desc">Roadmap consolidado dos projetos de injetores: FenicsMD, Nasdaq, A5X, NUAM, CSD-BR e demais frentes de Market Data.</div>
+          <div class="page-eyebrow" data-en="Market Data">Market Data</div>
+          <div class="page-title" data-en="Market Data Roadmap 2026–2027">Roadmap Market Data 2026–2027</div>
+          <div class="page-desc" data-en="Roadmap consolidado dos projetos de injetores: FenicsMD, Nasdaq, A5X, NUAM, CSD-BR e demais frentes de Market Data.">Roadmap consolidado dos projetos de injetores: FenicsMD, Nasdaq, A5X, NUAM, CSD-BR e demais frentes de Market Data.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -788,9 +790,9 @@
     <div class="panel" id="p-roadmap">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Market Data</div>
-          <div class="page-title">Projetos 2026 — Accomplished vs Pending</div>
-          <div class="page-desc">Dashboard consolidado de status de todos os projetos da área.</div>
+          <div class="page-eyebrow" data-en="Market Data">Market Data</div>
+          <div class="page-title" data-en="Projects 2026 — Accomplished vs Pending">Projetos 2026 — Accomplished vs Pending</div>
+          <div class="page-desc" data-en="Consolidated status dashboard for all department projects.">Dashboard consolidado de status de todos os projetos da área.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -805,9 +807,9 @@
     <div class="panel" id="p-automacao">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Market Data</div>
-          <div class="page-title">CoE Automação — Sprint Planning 2026</div>
-          <div class="page-desc">Planejamento de sprints do Centro de Excelência em Automação.</div>
+          <div class="page-eyebrow" data-en="Market Data">Market Data</div>
+          <div class="page-title" data-en="Automation CoE — Sprint Planning 2026">CoE Automação — Sprint Planning 2026</div>
+          <div class="page-desc" data-en="Sprint planning for the Automation Center of Excellence.">Planejamento de sprints do Centro de Excelência em Automação.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -822,9 +824,9 @@
     <div class="panel" id="p-hub-datafeeds">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Market Data</div>
-          <div class="page-title">HUB Datafeeds — Dashboard 2026</div>
-          <div class="page-desc">Visão consolidada dos datafeeds operados pela área.</div>
+          <div class="page-eyebrow" data-en="Market Data">Market Data</div>
+          <div class="page-title" data-en="Datafeeds HUB — Dashboard 2026">HUB Datafeeds — Dashboard 2026</div>
+          <div class="page-desc" data-en="Consolidated view of datafeeds operated by the department.">Visão consolidada dos datafeeds operados pela área.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -839,9 +841,9 @@
     <div class="panel" id="p-team">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Market Data</div>
-          <div class="page-title">Estrutura do Time</div>
-          <div class="page-desc">4 domínios operacionais. ~14 pessoas + estagiários.</div>
+          <div class="page-eyebrow" data-en="Market Data">Market Data</div>
+          <div class="page-title" data-en="Team Structure">Estrutura do Time</div>
+          <div class="page-desc" data-en="4 operating domains. ~14 people + interns.">4 domínios operacionais. ~14 pessoas + estagiários.</div>
         </div>
         <div class="domain-grid">
           <div class="domain-card">
@@ -881,9 +883,9 @@
     <div class="panel" id="p-breakeven">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Diretoria</div>
-          <div class="page-title">Breakeven por Produto — Maio 2026</div>
-          <div class="page-desc">Análise de ponto de equilíbrio por linha de produto.</div>
+          <div class="page-eyebrow" data-en="Leadership">Diretoria</div>
+          <div class="page-title" data-en="Breakeven by Product — May 2026">Breakeven por Produto — Maio 2026</div>
+          <div class="page-desc" data-en="Break-even analysis by product line.">Análise de ponto de equilíbrio por linha de produto.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -898,9 +900,9 @@
     <div class="panel" id="p-faturamento">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Diretoria</div>
-          <div class="page-title">Dashboard Faturamento — Maio 2026</div>
-          <div class="page-desc">Receita consolidada do mês por produto e cliente.</div>
+          <div class="page-eyebrow" data-en="Leadership">Diretoria</div>
+          <div class="page-title" data-en="Revenue Dashboard — May 2026">Dashboard Faturamento — Maio 2026</div>
+          <div class="page-desc" data-en="Consolidated monthly revenue by product and client.">Receita consolidada do mês por produto e cliente.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -915,9 +917,9 @@
     <div class="panel" id="p-despesas">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Diretoria</div>
-          <div class="page-title">Despesas com Fornecedores — Jun/2026</div>
-          <div class="page-desc">Relatório consolidado de despesas com provedores de dados.</div>
+          <div class="page-eyebrow" data-en="Leadership">Diretoria</div>
+          <div class="page-title" data-en="Vendor Expenses — Jun/2026">Despesas com Fornecedores — Jun/2026</div>
+          <div class="page-desc" data-en="Consolidated report of expenses with data providers.">Relatório consolidado de despesas com provedores de dados.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -932,9 +934,9 @@
     <div class="panel" id="p-ice-contratos">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Diretoria</div>
-          <div class="page-title">ICE Data Services — Contratos Consolidados</div>
-          <div class="page-desc">Hierarquia completa dos 9 addenda do contrato ICE.</div>
+          <div class="page-eyebrow" data-en="Leadership">Diretoria</div>
+          <div class="page-title" data-en="ICE Data Services — Consolidated Contracts">ICE Data Services — Contratos Consolidados</div>
+          <div class="page-desc" data-en="Complete hierarchy of the 9 addenda in the ICE contract.">Hierarquia completa dos 9 addenda do contrato ICE.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -949,9 +951,9 @@
     <div class="panel" id="p-terminal-latam">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Diretoria</div>
-          <div class="page-title">Terminal Latam — Market Data Dashboard</div>
-          <div class="page-desc">P&L e cenários de break-even para Chile, Colômbia e Peru (NUAM).</div>
+          <div class="page-eyebrow" data-en="Leadership">Diretoria</div>
+          <div class="page-title" data-en="Latam Terminal — Market Data Dashboard">Terminal Latam — Market Data Dashboard</div>
+          <div class="page-desc" data-en="P&L and break-even scenarios for Chile, Colombia and Peru (NUAM).">P&L e cenários de break-even para Chile, Colômbia e Peru (NUAM).</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -966,9 +968,9 @@
     <div class="panel" id="p-exchange-map">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Diretoria</div>
-          <div class="page-title">Mapa de Bolsas</div>
-          <div class="page-desc">Dashboard com os 32 contratos de bolsa ativos, organizados por região e status.</div>
+          <div class="page-eyebrow" data-en="Leadership">Diretoria</div>
+          <div class="page-title" data-en="Exchange Map">Mapa de Bolsas</div>
+          <div class="page-desc" data-en="Dashboard with the 32 active exchange contracts, organized by region and status.">Dashboard com os 32 contratos de bolsa ativos, organizados por região e status.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -984,9 +986,9 @@
     <div class="panel" id="p-licensing-process">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Market Data</div>
-          <div class="page-title">Processo de Licenciamento & Aquisição de Conteúdo</div>
-          <div class="page-desc">Guia de referência: como funciona o processo de licenciamento de novos dados, da negociação à ativação.</div>
+          <div class="page-eyebrow" data-en="Market Data">Market Data</div>
+          <div class="page-title" data-en="Licensing & Content Acquisition Process">Processo de Licenciamento & Aquisição de Conteúdo</div>
+          <div class="page-desc" data-en="Reference guide: how the licensing process for new data works, from negotiation to activation.">Guia de referência: como funciona o processo de licenciamento de novos dados, da negociação à ativação.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1001,9 +1003,9 @@
     <div class="panel" id="p-fees-cheatsheet">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Marketing & Materiais</div>
-          <div class="page-title">Cheatsheet de Fees — Bolsas e Fornecedores</div>
-          <div class="page-desc">Consulta rápida de taxas por bolsa. Self-service para o time de vendas — reduz a necessidade de acionar o time de Market Data.</div>
+          <div class="page-eyebrow" data-en="Marketing & Materials">Marketing & Materiais</div>
+          <div class="page-title" data-en="Fees Cheatsheet — Exchanges & Vendors">Cheatsheet de Fees — Bolsas e Fornecedores</div>
+          <div class="page-desc" data-en="Consulta rápida de taxas por bolsa. Self-service para o time de vendas — reduz a necessidade de acionar o time de Market Data.">Consulta rápida de taxas por bolsa. Self-service para o time de vendas — reduz a necessidade de acionar o time de Market Data.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1018,9 +1020,9 @@
     <div class="panel" id="p-agro-policies">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Marketing & Materiais</div>
-          <div class="page-title">Políticas Comerciais — Bolsas Agrícolas Internacionais</div>
-          <div class="page-desc">Regras de display, non-display e redistribuição para CME/CBOT, ICE, Euronext/MATIF, B3, DCE e JSE/SAFEX.</div>
+          <div class="page-eyebrow" data-en="Marketing & Materials">Marketing & Materiais</div>
+          <div class="page-title" data-en="Commercial Policies — International Agro Exchanges">Políticas Comerciais — Bolsas Agrícolas Internacionais</div>
+          <div class="page-desc" data-en="Display, non-display and redistribution rules for CME/CBOT, ICE, Euronext/MATIF, B3, DCE and JSE/SAFEX.">Regras de display, non-display e redistribuição para CME/CBOT, ICE, Euronext/MATIF, B3, DCE e JSE/SAFEX.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1036,9 +1038,9 @@
     <div class="panel" id="p-inteligencia-mercado">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Cenário Competitivo</div>
-          <div class="page-title">Inteligência de Mercado — Broadcast+ vs Competidores</div>
-          <div class="page-desc">Posicionamento competitivo frente a Bloomberg, LSEG, Trillia, CMA e outros players do mercado.</div>
+          <div class="page-eyebrow" data-en="Competitive Landscape">Cenário Competitivo</div>
+          <div class="page-title" data-en="Market Intelligence — Broadcast+ vs Competitors">Inteligência de Mercado — Broadcast+ vs Competidores</div>
+          <div class="page-desc" data-en="Competitive positioning against Bloomberg, LSEG, Trillia, CMA and other market players.">Posicionamento competitivo frente a Bloomberg, LSEG, Trillia, CMA e outros players do mercado.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1053,9 +1055,9 @@
     <div class="panel" id="p-bpipe">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Cenário Competitivo</div>
-          <div class="page-title">Bloomberg B-PIPE × Broadcast — Matriz Competitiva</div>
-          <div class="page-desc">Comparação direta de funcionalidades, cobertura e precificação entre as plataformas.</div>
+          <div class="page-eyebrow" data-en="Competitive Landscape">Cenário Competitivo</div>
+          <div class="page-title" data-en="Bloomberg B-PIPE × Broadcast — Competitive Matrix">Bloomberg B-PIPE × Broadcast — Matriz Competitiva</div>
+          <div class="page-desc" data-en="Direct comparison of features, coverage and pricing between platforms.">Comparação direta de funcionalidades, cobertura e precificação entre as plataformas.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1070,9 +1072,9 @@
     <div class="panel" id="p-economatica">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Cenário Competitivo</div>
-          <div class="page-title">Economática × Broadcast — Competitive Landscape</div>
-          <div class="page-desc">Leitura executiva, matriz comparativa e recomendação estratégica frente à Economática.</div>
+          <div class="page-eyebrow" data-en="Competitive Landscape">Cenário Competitivo</div>
+          <div class="page-title" data-en="Economática × Broadcast — Competitive Landscape">Economática × Broadcast — Competitive Landscape</div>
+          <div class="page-desc" data-en="Executive reading, comparative matrix and strategic recommendation against Economática.">Leitura executiva, matriz comparativa e recomendação estratégica frente à Economática.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1088,9 +1090,9 @@
     <div class="panel" id="p-derived-commodities">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Produto</div>
-          <div class="page-title">Derived Data — Commodities</div>
-          <div class="page-desc">Brainstorm de produtos derivados para a classe de ativos de commodities.</div>
+          <div class="page-eyebrow" data-en="Product">Produto</div>
+          <div class="page-title" data-en="Derived Data — Commodities">Derived Data — Commodities</div>
+          <div class="page-desc" data-en="Brainstorm of derived products for the commodities asset class.">Brainstorm de produtos derivados para a classe de ativos de commodities.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1105,9 +1107,9 @@
     <div class="panel" id="p-derived-macro">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Produto</div>
-          <div class="page-title">Derived Data — Macro</div>
-          <div class="page-desc">Brainstorm de produtos derivados para a classe de ativos macro.</div>
+          <div class="page-eyebrow" data-en="Product">Produto</div>
+          <div class="page-title" data-en="Derived Data — Macro">Derived Data — Macro</div>
+          <div class="page-desc" data-en="Brainstorm of derived products for the macro asset class.">Brainstorm de produtos derivados para a classe de ativos macro.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1123,9 +1125,9 @@
     <div class="panel" id="p-ice-pipeline">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Marketing & Materiais</div>
-          <div class="page-title">ICE Novas Fontes</div>
-          <div class="page-desc">Pipeline comercial de clientes beneficiários do pacote ICE Data — 15 bolsas internacionais.</div>
+          <div class="page-eyebrow" data-en="Marketing & Materials">Marketing & Materiais</div>
+          <div class="page-title" data-en="ICE New Sources">ICE Novas Fontes</div>
+          <div class="page-desc" data-en="Commercial pipeline of beneficiary clients for the ICE Data package — 15 international exchanges.">Pipeline comercial de clientes beneficiários do pacote ICE Data — 15 bolsas internacionais.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1140,9 +1142,9 @@
     <div class="panel" id="p-oferta-dados">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Marketing & Materiais</div>
-          <div class="page-title">Infográfico Dados — Mai/26</div>
-          <div class="page-desc">One-pager de vendas com análise de crescimento da cobertura de instrumentos.</div>
+          <div class="page-eyebrow" data-en="Marketing & Materials">Marketing & Materiais</div>
+          <div class="page-title" data-en="Data Infographic — May/26">Infográfico Dados — Mai/26</div>
+          <div class="page-desc" data-en="Sales one-pager with growth analysis of instrument coverage.">One-pager de vendas com análise de crescimento da cobertura de instrumentos.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1157,9 +1159,9 @@
     <div class="panel" id="p-datafeed-visao">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Marketing & Materiais</div>
-          <div class="page-title">Broadcast Datafeed — Visão Geral de Produto</div>
-          <div class="page-desc">Material institucional sobre o produto Datafeed para apresentação a clientes.</div>
+          <div class="page-eyebrow" data-en="Marketing & Materials">Marketing & Materiais</div>
+          <div class="page-title" data-en="Broadcast Datafeed — Product Overview">Broadcast Datafeed — Visão Geral de Produto</div>
+          <div class="page-desc" data-en="Institutional material about the Datafeed product for client presentations.">Material institucional sobre o produto Datafeed para apresentação a clientes.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1174,9 +1176,9 @@
     <div class="panel" id="p-esg">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Marketing & Materiais</div>
-          <div class="page-title">Levantamento de Mercado — Dados ESG</div>
-          <div class="page-desc">Pesquisa de mercado e oportunidades de produto no segmento de dados ESG.</div>
+          <div class="page-eyebrow" data-en="Marketing & Materials">Marketing & Materiais</div>
+          <div class="page-title" data-en="Market Research — ESG Data">Levantamento de Mercado — Dados ESG</div>
+          <div class="page-desc" data-en="Market research and product opportunities in the ESG data segment.">Pesquisa de mercado e oportunidades de produto no segmento de dados ESG.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1191,9 +1193,9 @@
     <div class="panel" id="p-sugestoes">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Market Data</div>
-          <div class="page-title">Dashboard de Sugestões de Clientes</div>
-          <div class="page-desc">Consolidação de pedidos e feedback de clientes via tickets de suporte.</div>
+          <div class="page-eyebrow" data-en="Market Data">Market Data</div>
+          <div class="page-title" data-en="Customer Suggestions Dashboard">Dashboard de Sugestões de Clientes</div>
+          <div class="page-desc" data-en="Consolidation of client requests and feedback via support tickets.">Consolidação de pedidos e feedback de clientes via tickets de suporte.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1209,9 +1211,9 @@
     <div class="panel" id="p-tam">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Diretoria</div>
-          <div class="page-title">Oportunidade de Mercado — TAM / SAM / SOM</div>
-          <div class="page-desc">Esta análise está disponível no Overview Executivo para acesso imediato.</div>
+          <div class="page-eyebrow" data-en="Leadership">Diretoria</div>
+          <div class="page-title" data-en="Market Opportunity — TAM / SAM / SOM">Oportunidade de Mercado — TAM / SAM / SOM</div>
+          <div class="page-desc" data-en="This analysis is available in the Executive Overview for immediate access.">Esta análise está disponível no Overview Executivo para acesso imediato.</div>
         </div>
         <div class="card" onclick="show('overview')" style="max-width:340px;">
           <div class="card-icon" style="background:var(--gold-dim)">📊</div>
@@ -1226,9 +1228,9 @@
         <div class="panel" id="p-nelogica">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Cenário Competitivo</div>
-          <div class="page-title">Nelogica vs Broadcast — Análise Competitiva</div>
-          <div class="page-desc">Comparativo direto entre Nelogica e Broadcast para uso em conversas comerciais e posicionamento de vendas.</div>
+          <div class="page-eyebrow" data-en="Competitive Landscape">Cenário Competitivo</div>
+          <div class="page-title" data-en="Nelogica vs Broadcast — Competitive Analysis">Nelogica vs Broadcast — Análise Competitiva</div>
+          <div class="page-desc" data-en="Comparativo direto entre Nelogica e Broadcast para uso em conversas comerciais e posicionamento de vendas.">Comparativo direto entre Nelogica e Broadcast para uso em conversas comerciais e posicionamento de vendas.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1243,9 +1245,9 @@
     <div class="panel" id="p-trillia">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Cenário Competitivo</div>
-          <div class="page-title">Trillia (B3) vs Broadcast — Análise Competitiva</div>
-          <div class="page-desc">Comparativo estratégico com o competidor mais relevante de médio prazo. Inclui visão executiva, matriz de funcionalidades, posicionamento e battle card.</div>
+          <div class="page-eyebrow" data-en="Competitive Landscape">Cenário Competitivo</div>
+          <div class="page-title" data-en="Trillia (B3) vs Broadcast — Competitive Analysis">Trillia (B3) vs Broadcast — Análise Competitiva</div>
+          <div class="page-desc" data-en="Comparativo estratégico com o competidor mais relevante de médio prazo. Inclui visão executiva, matriz de funcionalidades, posicionamento e battle card.">Comparativo estratégico com o competidor mais relevante de médio prazo. Inclui visão executiva, matriz de funcionalidades, posicionamento e battle card.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1260,9 +1262,9 @@
     <div class="panel" id="p-cma">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Cenário Competitivo</div>
-          <div class="page-title">CMA vs Broadcast — Análise Competitiva & Oportunidade</div>
-          <div class="page-desc">Comparativo com foco na oportunidade de captura de clientes CMA. Inclui perfil da CMA, matriz de funcionalidades, playbook de abordagem e battle card.</div>
+          <div class="page-eyebrow" data-en="Competitive Landscape">Cenário Competitivo</div>
+          <div class="page-title" data-en="CMA vs Broadcast — Competitive Analysis & Opportunity">CMA vs Broadcast — Análise Competitiva & Oportunidade</div>
+          <div class="page-desc" data-en="Comparativo com foco na oportunidade de captura de clientes CMA. Inclui perfil da CMA, matriz de funcionalidades, playbook de abordagem e battle card.">Comparativo com foco na oportunidade de captura de clientes CMA. Inclui perfil da CMA, matriz de funcionalidades, playbook de abordagem e battle card.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1277,9 +1279,9 @@
     <div class="panel" id="p-despesas-mensal">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Visão Mensal</div>
-          <div class="page-title">Despesas com Dados — Visão Mensal 2026</div>
-          <div class="page-desc">Evolução mês a mês de Jan a Jun/2026 — Real vs Orçado, por fornecedor, YTD acumulado e projeção anual.</div>
+          <div class="page-eyebrow" data-en="Visão Mensal">Visão Mensal</div>
+          <div class="page-title" data-en="Data Expenses — Monthly View 2026">Despesas com Dados — Visão Mensal 2026</div>
+          <div class="page-desc" data-en="Month-by-month evolution from Jan to Jun/2026 — Actual vs Budget, by vendor, YTD accumulated and annual projection.">Evolução mês a mês de Jan a Jun/2026 — Real vs Orçado, por fornecedor, YTD acumulado e projeção anual.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1294,9 +1296,9 @@
     <div class="panel" id="p-oferta-jun2026">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Marketing & Materiais</div>
-          <div class="page-title">Infográfico Dados — Jun/26</div>
-          <div class="page-desc">Infográfico atualizado com a base de Jun/2026 — 712.391 instrumentos, +61,9% vs Dez/2024. Principais contribuidores: Precia (Colômbia), FenicsMD FX, FenicsMD FX Options e ICE Data Curvas.</div>
+          <div class="page-eyebrow" data-en="Marketing & Materials">Marketing & Materiais</div>
+          <div class="page-title" data-en="Data Infographic — Jun/26">Infográfico Dados — Jun/26</div>
+          <div class="page-desc" data-en="Infográfico atualizado com a base de Jun/2026 — 712.391 instrumentos, +61,9% vs Dez/2024. Principais contribuidores: Precia (Colômbia), FenicsMD FX, FenicsMD FX Options e ICE Data Curvas.">Infográfico atualizado com a base de Jun/2026 — 712.391 instrumentos, +61,9% vs Dez/2024. Principais contribuidores: Precia (Colômbia), FenicsMD FX, FenicsMD FX Options e ICE Data Curvas.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1311,9 +1313,9 @@
     <div class="panel" id="p-fat-mensal">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Visão Mensal</div>
-          <div class="page-title">Faturamento — Visão Mensal 2026</div>
-          <div class="page-desc">Evolução mês a mês Jan–Jun 2026 — faturamento total, carteira, clientes, contratos, por segmento e por plataforma.</div>
+          <div class="page-eyebrow" data-en="Visão Mensal">Visão Mensal</div>
+          <div class="page-title" data-en="Revenue — Monthly View 2026">Faturamento — Visão Mensal 2026</div>
+          <div class="page-desc" data-en="Evolução mês a mês Jan–Jun 2026 — faturamento total, carteira, clientes, contratos, por segmento e por plataforma.">Evolução mês a mês Jan–Jun 2026 — faturamento total, carteira, clientes, contratos, por segmento e por plataforma.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1328,9 +1330,9 @@
     <div class="panel" id="p-agro-contribuintes">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Marketing & Materiais</div>
-          <div class="page-title">Agro — Instrumentos & Contribuintes</div>
-          <div class="page-desc">2.413 instrumentos agro mapeados via 5 contribuintes — Agência Estado/CEPEA, Scot Consultoria, Aboissa, Ibrafe, ABRAPA e Grão Direto. 14 categorias, 16 commodities.</div>
+          <div class="page-eyebrow" data-en="Marketing & Materials">Marketing & Materiais</div>
+          <div class="page-title" data-en="Agro — Instruments & Contributors">Agro — Instrumentos & Contribuintes</div>
+          <div class="page-desc" data-en="2.413 instrumentos agro mapeados via 5 contribuintes — Agência Estado/CEPEA, Scot Consultoria, Aboissa, Ibrafe, ABRAPA e Grão Direto. 14 categorias, 16 commodities.">2.413 instrumentos agro mapeados via 5 contribuintes — Agência Estado/CEPEA, Scot Consultoria, Aboissa, Ibrafe, ABRAPA e Grão Direto. 14 categorias, 16 commodities.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1346,9 +1348,9 @@
     <div class="panel" id="p-newsletter">
       <div class="inner">
         <div class="page-header">
-          <div class="page-eyebrow">Comunicação</div>
-          <div class="page-title">Broadcast Market Data — Destaques Nov/Dez 2025</div>
-          <div class="page-desc">Newsletter com os principais destaques e conquistas do período.</div>
+          <div class="page-eyebrow" data-en="Communications">Comunicação</div>
+          <div class="page-title" data-en="Broadcast Market Data — Highlights Nov/Dec 2025">Broadcast Market Data — Destaques Nov/Dez 2025</div>
+          <div class="page-desc" data-en="Newsletter with the key highlights and achievements of the period.">Newsletter com os principais destaques e conquistas do período.</div>
         </div>
         <div class="doc-frame-wrap">
           <div class="doc-frame-bar">
@@ -1433,6 +1435,55 @@
     let saved = 'dark';
     try { saved = localStorage.getItem('mda-theme') || 'dark'; } catch(e) {}
     applyTheme(saved);
+  })();
+
+  /* ── LANGUAGE TOGGLE (PT-BR / EN) ── */
+  let currentLang = 'pt';
+
+  function applyLang(lang) {
+    currentLang = lang;
+    document.getElementById('lang-label').textContent = lang === 'en' ? 'EN' : 'PT';
+    document.documentElement.lang = lang === 'en' ? 'en' : 'pt-BR';
+
+    // simple text elements (labels, headers, descriptions)
+    document.querySelectorAll('[data-en]').forEach(el => {
+      if (el.tagName === 'A') return; // handled separately below
+      if (!el.hasAttribute('data-pt')) el.setAttribute('data-pt', el.textContent);
+      el.textContent = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-pt');
+    });
+
+    // nav-item / overview link anchors: swap the text node after the icon span
+    document.querySelectorAll('a[data-en]').forEach(a => {
+      const textNode = Array.from(a.childNodes).find(n => n.nodeType === 3 && n.textContent.trim().length);
+      if (!a.hasAttribute('data-pt')) {
+        a.setAttribute('data-pt', textNode ? textNode.textContent.trim() : a.textContent.trim());
+      }
+      const target = lang === 'en' ? a.getAttribute('data-en') : a.getAttribute('data-pt');
+      if (textNode) textNode.textContent = ' ' + target;
+    });
+
+    // search input placeholder
+    const searchInput = document.getElementById('nav-search');
+    if (searchInput) {
+      if (!searchInput.hasAttribute('data-pt-placeholder')) {
+        searchInput.setAttribute('data-pt-placeholder', searchInput.placeholder);
+      }
+      searchInput.placeholder = lang === 'en'
+        ? searchInput.getAttribute('data-en-placeholder')
+        : searchInput.getAttribute('data-pt-placeholder');
+    }
+  }
+
+  function toggleLang() {
+    const next = currentLang === 'pt' ? 'en' : 'pt';
+    applyLang(next);
+    try { localStorage.setItem('mda-lang', next); } catch(e) {}
+  }
+
+  (function initLang() {
+    let saved = 'pt';
+    try { saved = localStorage.getItem('mda-lang') || 'pt'; } catch(e) {}
+    applyLang(saved);
   })();
 
   /* ── FOOTER DATE ── */
