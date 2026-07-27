@@ -203,7 +203,7 @@
   .nav-group-btn .chevron { font-size: 10px; color: var(--text-3); transition: transform .2s; }
   .nav-group-btn.open .chevron { transform: rotate(90deg); }
 
-  .nav-items { overflow: hidden; }
+  .nav-items { overflow: hidden; max-height: 0; }
   .nav-item {
     display: flex; align-items: center; gap: 8px;
     padding: 7px 14px 7px 36px;
@@ -406,7 +406,7 @@
 
       <!-- Diretoria -->
       <div class="nav-group">
-        <button class="nav-group-btn open" onclick="toggleGroup(this)">
+        <button class="nav-group-btn" onclick="toggleGroup(this)">
           <span class="g-icon">👔</span><span class="g-label">Diretoria</span>
           <span class="g-count">9</span><span class="chevron">▶</span>
         </button>
@@ -417,6 +417,7 @@
           <a class="nav-item" onclick="show('ice-contratos')" href="#"><span class="item-dot"></span> ICE Contratos Consolidados</a>
           <a class="nav-item" onclick="show('ice-pipeline')" href="#"><span class="item-dot"></span> ICE Novas Fontes</a>
           <a class="nav-item" onclick="show('exchange-map')" href="#"><span class="item-dot"></span> Mapa de Bolsas</a>
+          <a class="nav-item" onclick="show('agro-policies')" href="#"><span class="item-dot"></span> Políticas — Bolsas Agro</a>
           <a class="nav-item" onclick="show('tam')" href="#"><span class="item-dot"></span> Oportunidade de Mercado</a>
           <a class="nav-item" onclick="show('terminal-latam')" href="#"><span class="item-dot"></span> Terminal Latam / NUAM</a>
         </div>
@@ -426,7 +427,7 @@
 
       <!-- Visão Mensal 2026 -->
       <div class="nav-group">
-        <button class="nav-group-btn open" onclick="toggleGroup(this)">
+        <button class="nav-group-btn" onclick="toggleGroup(this)">
           <span class="g-icon">📅</span><span class="g-label">Visão Mensal — 2026</span>
           <span class="g-count">2</span><span class="chevron">▶</span>
         </button>
@@ -440,7 +441,7 @@
 
       <!-- Market Data -->
       <div class="nav-group">
-        <button class="nav-group-btn open" onclick="toggleGroup(this)">
+        <button class="nav-group-btn" onclick="toggleGroup(this)">
           <span class="g-icon">📡</span><span class="g-label">Market Data</span>
           <span class="g-count">7</span><span class="chevron">▶</span>
         </button>
@@ -459,7 +460,7 @@
 
       <!-- Vendas & Marketing -->
       <div class="nav-group">
-        <button class="nav-group-btn open" onclick="toggleGroup(this)">
+        <button class="nav-group-btn" onclick="toggleGroup(this)">
           <span class="g-icon">📊</span><span class="g-label">Cenário Competitivo</span>
           <span class="g-count">6</span><span class="chevron">▶</span>
         </button>
@@ -477,9 +478,9 @@
 
       <!-- Marketing & Materiais -->
       <div class="nav-group">
-        <button class="nav-group-btn open" onclick="toggleGroup(this)">
+        <button class="nav-group-btn" onclick="toggleGroup(this)">
           <span class="g-icon">📣</span><span class="g-label">Marketing & Materiais</span>
-          <span class="g-count">8</span><span class="chevron">▶</span>
+          <span class="g-count">7</span><span class="chevron">▶</span>
         </button>
         <div class="nav-items">
           <a class="nav-item" onclick="show('fees-cheatsheet')" href="#"><span class="item-dot"></span> Cheatsheet de Fees</a>
@@ -488,7 +489,6 @@
           <a class="nav-item" onclick="show('oferta-dados')" href="#"><span class="item-dot"></span> Infográfico Dados — Mai/26</a>
           <a class="nav-item" onclick="show('oferta-jun2026')" href="#"><span class="item-dot"></span> Infográfico Dados — Jun/26</a>
           <a class="nav-item" onclick="show('esg')" href="#"><span class="item-dot"></span> Levantamento ESG</a>
-          <a class="nav-item" onclick="show('agro-policies')" href="#"><span class="item-dot"></span> Políticas — Bolsas Agro</a>
           <a class="nav-item" onclick="show('agro-contribuintes')" href="#"><span class="item-dot"></span> Agro — Instrumentos & Contribuintes</a>
         </div>
       </div>
@@ -497,7 +497,7 @@
 
       <!-- Produto -->
       <div class="nav-group">
-        <button class="nav-group-btn open" onclick="toggleGroup(this)">
+        <button class="nav-group-btn" onclick="toggleGroup(this)">
           <span class="g-icon">🧪</span><span class="g-label">Produto</span>
           <span class="g-count">2</span><span class="chevron">▶</span>
         </button>
@@ -511,7 +511,7 @@
 
       <!-- Comunicação -->
       <div class="nav-group">
-        <button class="nav-group-btn open" onclick="toggleGroup(this)">
+        <button class="nav-group-btn" onclick="toggleGroup(this)">
           <span class="g-icon">📰</span><span class="g-label">Comunicação</span>
           <span class="g-count">1</span><span class="chevron">▶</span>
         </button>
@@ -1404,8 +1404,6 @@
     }
   }
 
-  document.querySelectorAll('.nav-items').forEach(el => el.style.maxHeight = 'none');
-
   /* ── THEME TOGGLE ── */
   const sunPath = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
   const moonPath = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
@@ -1462,7 +1460,14 @@
         const original = item.getAttribute('data-original-text');
         if (original) item.innerHTML = original;
       });
-      groups.forEach(g => g.classList.remove('search-hidden'));
+      groups.forEach(g => {
+        g.classList.remove('search-hidden');
+        const btn = g.querySelector('.nav-group-btn');
+        const nav = g.querySelector('.nav-items');
+        btn.classList.remove('open');
+        nav.style.transition = 'none';
+        nav.style.maxHeight = '0';
+      });
       document.querySelectorAll('.nav-divider').forEach(d => d.classList.remove('search-hidden'));
       noResults.classList.remove('show');
       return;
