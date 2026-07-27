@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist de Onboarding &amp; Offboarding — Dados de Mercado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d1b2a; --navy-2:#132537; --navy-3:#1b3149;
+  --gold:#c9a227; --gold-soft:#e0c15c; --gold-dim:rgba(201,162,39,.18);
+  --ink:#eef2f6; --ink-dim:#9fb0c0; --line:rgba(201,162,39,.22);
+  --bg:var(--navy); --surface:var(--navy-2); --surface-2:var(--navy-3);
+  --text:var(--ink); --text-dim:var(--ink-dim);
+}
+body.light{
+  --bg:#f5f2ea; --surface:#ffffff; --surface-2:#efeadd;
+  --text:#12212f; --text-dim:#5c6b7a; --line:rgba(13,27,42,.14);
+  --gold:#9a7b16; --gold-soft:#b8941f; --gold-dim:rgba(154,123,22,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Inter',system-ui,sans-serif; font-weight:300;
+  line-height:1.6; padding-bottom:74px;
+  transition:background .35s ease,color .35s ease;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+
+/* ── Cabeçalho ── */
+header{padding:72px 0 40px;border-bottom:1px solid var(--line);position:relative}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:18px;
+}
+h1{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(2.4rem,5.5vw,4rem);line-height:1.05;letter-spacing:-.01em;
+}
+h1 em{font-style:italic;color:var(--gold-soft)}
+.sub{margin-top:16px;max-width:620px;color:var(--text-dim);font-size:15px}
+.toggle{
+  position:absolute;top:72px;right:28px;background:transparent;
+  border:1px solid var(--line);color:var(--text-dim);cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
+  padding:9px 14px;border-radius:2px;text-transform:uppercase;
+}
+.toggle:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── Barra de controle ── */
+.controls{
+  position:sticky;top:0;z-index:20;background:var(--bg);
+  border-bottom:1px solid var(--line);padding:16px 0;margin-bottom:8px;
+}
+.controls-inner{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filters .lbl{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--text-dim);margin-right:6px;
+}
+.chip{
+  border:1px solid var(--line);background:transparent;color:var(--text-dim);
+  font-family:'Inter',sans-serif;font-size:12px;letter-spacing:.04em;
+  padding:7px 15px;border-radius:99px;cursor:pointer;transition:all .2s;
+}
+.chip:hover{border-color:var(--gold)}
+.chip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--navy);font-weight:500}
+body.light .chip[aria-pressed="true"]{color:#fff}
+.progress-box{display:flex;align-items:center;gap:12px;min-width:210px}
+.bar{flex:1;height:3px;background:var(--gold-dim);border-radius:2px;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:var(--gold);transition:width .4s ease}
+.pct{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);min-width:64px;text-align:right}
+
+/* ── Fases ── */
+.phase{padding:44px 0;border-bottom:1px solid var(--line)}
+.phase-head{display:flex;gap:20px;align-items:baseline;margin-bottom:6px}
+.phase-num{
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);
+  letter-spacing:.1em;padding-top:6px;
+}
+.phase h2{
+  font-family:'Cormorant Garamond',serif;font-weight:400;
+  font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.2;
+}
+.phase-note{color:var(--text-dim);font-size:13.5px;margin:6px 0 26px 52px;max-width:640px}
+@media(max-width:640px){.phase-note{margin-left:0}}
+
+/* ── Itens ── */
+.group{margin:0 0 26px 52px}
+@media(max-width:640px){.group{margin-left:0}}
+.group-title{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:12px;
+  padding-bottom:8px;border-bottom:1px solid var(--line);
+}
+.item{
+  display:flex;gap:14px;align-items:flex-start;padding:11px 14px;
+  border-left:2px solid transparent;transition:background .2s,border-color .2s;
+}
+.item:hover{background:var(--surface);border-left-color:var(--gold-dim)}
+.item.done{opacity:.45;border-left-color:var(--gold)}
+.item.done .txt{text-decoration:line-through}
+.item input{
+  appearance:none;width:16px;height:16px;margin-top:4px;flex-shrink:0;
+  border:1px solid var(--line);border-radius:2px;cursor:pointer;position:relative;
+}
+.item input:hover{border-color:var(--gold)}
+.item input:checked{background:var(--gold);border-color:var(--gold)}
+.item input:checked::after{
+  content:'';position:absolute;left:5px;top:1px;width:4px;height:9px;
+  border:solid var(--navy);border-width:0 2px 2px 0;transform:rotate(45deg);
+}
+.item input:focus-visible{outline:2px solid var(--gold-soft);outline-offset:2px}
+.body{flex:1;min-width:0}
+.txt{font-size:14.5px}
+.hint{display:block;font-size:12.5px;color:var(--text-dim);margin-top:4px;font-style:italic}
+.tags{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;padding-top:3px}
+.tag{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 7px;border:1px solid var(--line);
+  border-radius:2px;color:var(--text-dim);white-space:nowrap;
+}
+.tag.own{border-color:var(--gold-dim);color:var(--gold)}
+.hidden{display:none !important}
+
+/* ── Destaque / offboarding ── */
+.callout{
+  margin:0 0 26px 52px;padding:20px 24px;background:var(--surface);
+  border-left:2px solid var(--gold);font-size:14px;color:var(--text-dim);
+}
+@media(max-width:640px){.callout{margin-left:0}}
+.callout strong{color:var(--text);font-weight:500}
+.offboard{background:var(--surface-2)}
+.offboard .phase-num{color:var(--gold-soft)}
+
+/* ── Rodapé ── */
+footer{
+  position:fixed;bottom:0;left:0;right:0;background:var(--bg);
+  border-top:1px solid var(--line);padding:14px 28px;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;
+  letter-spacing:.1em;color:var(--text-dim);text-transform:uppercase;
+}
+footer .g{color:var(--gold)}
+@media(prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <button class="toggle" id="themeBtn">Modo claro</button>
+    <div class="eyebrow">Dados de Mercado · Broadcast / Agência Estado</div>
+    <h1>Checklist de <em>Onboarding</em><br>&amp; Desligamento</h1>
+    <p class="sub">Roteiro único para menor aprendiz, estagiário e efetivo. Cada fase é uma etapa do percurso; dentro de cada uma, os itens estão em ordem alfabética. Use os filtros para ver apenas o que se aplica ao perfil e à área da pessoa.</p>
+  </header>
+</div>
+
+<div class="controls">
+  <div class="wrap controls-inner">
+    <div class="filters">
+      <span class="lbl">Perfil</span>
+      <button class="chip" data-f="perfil" data-v="all" aria-pressed="true">Todos</button>
+      <button class="chip" data-f="perfil" data-v="aprendiz" aria-pressed="false">Menor aprendiz</button>
+      <button class="chip" data-f="perfil" data-v="estagio" aria-pressed="false">Estagiário</button>
+      <button class="chip" data-f="perfil" data-v="efetivo" aria-pressed="false">Efetivo</button>
+    </div>
+    <div class="filters">
+      <span class="lbl">Área</span>
+      <button class="chip" data-f="area" data-v="all" aria-pressed="true">Todas</button>
+      <button class="chip" data-f="area" data-v="agro" aria-pressed="false">Agro</button>
+      <button class="chip" data-f="area" data-v="realtime" aria-pressed="false">Tempo Real</button>
+      <button class="chip" data-f="area" data-v="automacao" aria-pressed="false">Automação</button>
+    </div>
+    <div class="progress-box">
+      <div class="bar"><span id="barFill"></span></div>
+      <div class="pct" id="pctTxt">0 / 0</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="list">
+
+  <!-- FASE 0 -->
+  <section class="phase">
+    <div class="phase-head"><span class="phase-num">FASE 0</span><h2>Antes do primeiro dia</h2></div>
+    <p class="phase-note">Tudo o que precisa estar pronto antes da pessoa sentar na cadeira. Responsáveis: gestor, RH e TI.</p>
+    <div class="group">
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Abrir chamado de TI com o perfil de acesso da área de destino</span></div><div class="tags"><span class="tag own">TI</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Definir a área de destino e a trilha específica</span><span class="hint">Tempo Real, Agro, Financeiro, Automação ou Atendimento</span></div><div class="tags"><span class="tag own">Gestor</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Definir o padrinho/buddy — referência para dúvidas nas primeiras semanas</span></div><div class="tags"><span class="tag own">Gestor</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Preparar estação de trabalho e notebook</span></div><div class="tags"><span class="tag own">TI</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Solicitar criação de e-mail corporativo e usuário de rede</span></div><div class="tags"><span class="tag own">TI</span></div></div>
+    </div>
+  </section>
+
+  <!-- FASE 1 -->
+  <section class="phase">
+    <div class="phase-head"><span class="phase-num">FASE 1</span><h2>Acessos e ferramentas</h2></div>
+    <p class="phase-note">Registre em cada item a data de solicitação e a data de liberação. Um acesso só conta como concluído depois que a própria pessoa testou o login.</p>
+
+    <div class="group">
+      <div class="group-title">Base — todos os perfis</div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Acesso às VMs da área</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Addin Excel Broadcast</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">AE Instrumentos</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Broadcast+</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">GA</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Jira</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Power Query</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Rede 10.0.1.4</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Rhevolution (RH)</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Thor</span></div></div>
+    </div>
+
+    <div class="group" data-area="agro">
+      <div class="group-title">Complementar — colaboradores do Agro</div>
+      <div class="item" data-area="agro"><input type="checkbox"><div class="body"><span class="txt">Broadcast Agro</span></div><div class="tags"><span class="tag">Agro</span></div></div>
+      <div class="item" data-area="agro"><input type="checkbox"><div class="body"><span class="txt">Hermes</span></div><div class="tags"><span class="tag">Agro</span></div></div>
+      <div class="item" data-area="agro"><input type="checkbox"><div class="body"><span class="txt">Phoenix</span></div><div class="tags"><span class="tag">Agro</span></div></div>
+    </div>
+
+    <div class="group" data-area="realtime">
+      <div class="group-title">Complementar — Tempo Real</div>
+      <div class="item" data-area="realtime"><input type="checkbox"><div class="body"><span class="txt">Mapear com a equipe as ferramentas e permissões específicas de Tempo Real</span><span class="hint">Lista a preencher — feeds, ambientes de cadastro de códigos e ajuste de ativos</span></div><div class="tags"><span class="tag own">A definir</span></div></div>
+    </div>
+
+    <div class="group" data-area="automacao">
+      <div class="group-title">Complementar — Automação</div>
+      <div class="item" data-area="automacao"><input type="checkbox"><div class="body"><span class="txt">Mapear com a equipe as ferramentas e permissões específicas de Automação</span><span class="hint">Lista a preencher — repositórios, pipelines e ambientes do CoE</span></div><div class="tags"><span class="tag own">A definir</span></div></div>
+    </div>
+  </section>
+
+  <!-- FASE 2 -->
+  <section class="phase">
+    <div class="phase-head"><span class="phase-num">FASE 2</span><h2>Comunicação e grupos</h2></div>
+    <p class="phase-note">Inclusão nas listas de distribuição. Sem isso a pessoa fica fora das rotinas que chegam por e-mail.</p>
+    <div class="group">
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">ae.taxas</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Atendimento</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Corp AE</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Dados Agência Estado</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Dados x Prod</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Marketdata.ae</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Projeto Automação</span></div></div>
+    </div>
+  </section>
+
+  <!-- FASE 3 -->
+  <section class="phase">
+    <div class="phase-head"><span class="phase-num">FASE 3</span><h2>Ambientação institucional</h2></div>
+    <p class="phase-note">Primeira semana. A ideia é dar contexto amplo antes de entrar no detalhe da rotina.</p>
+    <div class="group">
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Apoio na configuração das ferramentas e execução dos testes necessários</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Apresentação ao time e boas-vindas</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Apresentação das áreas com as quais haverá interação no dia a dia</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Apresentação e treinamento sobre o Broadcast</span><span class="hint">O produto vem antes das ferramentas internas</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Confidencialidade e uso de dados licenciados de bolsa</span><span class="hint">O que pode e o que não pode ser redistribuído — risco contratual real</span></div><div class="tags"><span class="tag own">Obrigatório</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Visão geral das áreas de Dados, Financeiro, Agro e Automação e suas formas de atuação</span></div></div>
+    </div>
+  </section>
+
+  <!-- FASE 4 -->
+  <section class="phase">
+    <div class="phase-head"><span class="phase-num">FASE 4</span><h2>Panorama da área de destino</h2></div>
+    <p class="phase-note">O recorte específico de onde a pessoa vai atuar, com exemplos concretos do que se faz ali.</p>
+    <div class="group">
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Apresentação dos principais processos e rotinas da área</span></div></div>
+      <div class="item" data-area="agro"><input type="checkbox"><div class="body"><span class="txt">Escopo do Agro explicado em linguagem concreta</span><span class="hint">Cadeias e commodities cobertas, fontes de preço e rotinas de apuração</span></div><div class="tags"><span class="tag">Agro</span></div></div>
+      <div class="item" data-area="automacao"><input type="checkbox"><div class="body"><span class="txt">Escopo da Automação explicado em linguagem concreta</span><span class="hint">Como o CoE atende as demandas das áreas, o que entra na esteira e como se prioriza</span></div><div class="tags"><span class="tag">Automação</span></div></div>
+      <div class="item" data-area="realtime"><input type="checkbox"><div class="body"><span class="txt">Escopo do Tempo Real explicado em linguagem concreta</span><span class="hint">Trabalhamos com dados de bolsas nacionais e internacionais, ajustamos valores de ativos, cadastramos códigos</span></div><div class="tags"><span class="tag">Tempo Real</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Escopo da área explicado em linguagem concreta, com exemplos do dia a dia</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Quem são os clientes e interlocutores da área, internos e externos</span></div></div>
+    </div>
+  </section>
+
+  <!-- FASE 5 -->
+  <section class="phase">
+    <div class="phase-head"><span class="phase-num">FASE 5</span><h2>Capacitação técnica</h2></div>
+    <p class="phase-note">Liberar acesso não é treinar. Cada ferramenta da Fase 1 precisa de uma sessão de uso guiado.</p>
+    <div class="group">
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Acompanhamento assistido das primeiras execuções</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Capacitação nas atividades e processos da rotina da pessoa</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Treinamento em cada ferramenta utilizada pela equipe</span></div></div>
+    </div>
+  </section>
+
+  <!-- FASE 6 -->
+  <section class="phase">
+    <div class="phase-head"><span class="phase-num">FASE 6</span><h2>Conhecimento de mercado</h2></div>
+    <p class="phase-note">Autoestudo dirigido, com material entregue pelo gestor. Peso maior para aprendiz e estagiário, que chegam sem repertório do setor.</p>
+    <div class="group">
+      <div class="item" data-perfil="aprendiz estagio"><input type="checkbox"><div class="body"><span class="txt">Como funciona o mercado de ações</span></div><div class="tags"><span class="tag">Aprendiz</span><span class="tag">Estágio</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Glossário de termos do setor</span></div></div>
+      <div class="item" data-perfil="aprendiz estagio"><input type="checkbox"><div class="body"><span class="txt">Mercado futuro e derivativos</span></div><div class="tags"><span class="tag">Aprendiz</span><span class="tag">Estágio</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Papel das bolsas e dos provedores de dados de mercado</span></div></div>
+      <div class="item" data-perfil="aprendiz estagio"><input type="checkbox"><div class="body"><span class="txt">Renda fixa</span></div><div class="tags"><span class="tag">Aprendiz</span><span class="tag">Estágio</span></div></div>
+    </div>
+  </section>
+
+  <!-- FASE 7 -->
+  <section class="phase">
+    <div class="phase-head"><span class="phase-num">FASE 7</span><h2>Acompanhamento</h2></div>
+    <p class="phase-note">Conversas curtas de calibragem, conduzidas pelo gestor.</p>
+    <div class="group">
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Check-in de 15 dias</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Check-in de 30 dias</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Check-in de 90 dias — avaliação de adaptação</span></div></div>
+    </div>
+  </section>
+
+  <!-- OFFBOARDING -->
+  <section class="phase offboard">
+    <div class="phase-head"><span class="phase-num">SAÍDA</span><h2>Desligamento</h2></div>
+    <p class="phase-note">Aplicável a pedidos de demissão e desligamentos. O objetivo é não perder nada que a área precise depois.</p>
+    <div class="callout">
+      <strong>Solicitar à Tivit a transferência do Drive do usuário para o Antonio Melo.</strong> Sem isso, arquivos importantes são perdidos junto com a conta. Esse pedido deve sair antes da data de encerramento do acesso, não depois.
+    </div>
+    <div class="group">
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Devolução de equipamentos e crachá</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Documentar rotinas e pendências em andamento</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Passagem de bastão das atividades para o substituto ou para o gestor</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Remoção dos grupos de e-mail da Fase 2</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Revogação dos acessos e ferramentas da Fase 1</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Solicitar à Tivit a transferência do Drive do usuário para o gestor</span><span class="hint">Fazer antes do encerramento da conta</span></div><div class="tags"><span class="tag own">Crítico</span></div></div>
+      <div class="item"><input type="checkbox"><div class="body"><span class="txt">Transferência de chamados e tarefas abertas no Jira</span></div></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <span>Antonio Melo · Market Data &amp; Automation</span>
+  <span class="g">Broadcast · Agência Estado</span>
+  <span id="upd">Atualizado em 24/07/2026</span>
+</footer>
+
+<script>
+(function(){
+  var state={perfil:'all',area:'all'};
+  var items=[].slice.call(document.querySelectorAll('.item'));
+  var groups=[].slice.call(document.querySelectorAll('.group[data-area]'));
+
+  function matches(el){
+    var p=el.getAttribute('data-perfil'), a=el.getAttribute('data-area');
+    if(state.area!=='all'&&a&&a!==state.area) return false;
+    if(state.area==='all'&&a) return true;
+    if(state.perfil!=='all'&&p&&p.indexOf(state.perfil)===-1) return false;
+    return true;
+  }
+  function apply(){
+    items.forEach(function(el){ el.classList.toggle('hidden',!matches(el)); });
+    groups.forEach(function(g){
+      var a=g.getAttribute('data-area');
+      g.classList.toggle('hidden', state.area!=='all' && a!==state.area ? true : false);
+    });
+    tally();
+  }
+  function tally(){
+    var vis=items.filter(function(el){return !el.classList.contains('hidden');});
+    var done=vis.filter(function(el){return el.querySelector('input').checked;}).length;
+    var pct=vis.length?Math.round(done/vis.length*100):0;
+    document.getElementById('barFill').style.width=pct+'%';
+    document.getElementById('pctTxt').textContent=done+' / '+vis.length;
+  }
+
+  document.querySelectorAll('.chip').forEach(function(b){
+    b.addEventListener('click',function(){
+      var f=b.getAttribute('data-f');
+      document.querySelectorAll('.chip[data-f="'+f+'"]').forEach(function(o){o.setAttribute('aria-pressed','false');});
+      b.setAttribute('aria-pressed','true');
+      state[f]=b.getAttribute('data-v');
+      apply();
+    });
+  });
+
+  items.forEach(function(el){
+    var cb=el.querySelector('input');
+    cb.addEventListener('change',function(){ el.classList.toggle('done',cb.checked); tally(); });
+  });
+
+  var btn=document.getElementById('themeBtn');
+  btn.addEventListener('click',function(){
+    document.body.classList.toggle('light');
+    btn.textContent=document.body.classList.contains('light')?'Modo escuro':'Modo claro';
+  });
+
+  apply();
+})();
+</script>
+</body>
+</html>
