@@ -367,10 +367,11 @@
   <button class="tab-btn active" onclick="switchTab('regional')">Regional</button>
   <button class="tab-btn" onclick="switchTab('vendedores')">Ranking Vendedores</button>
   <button class="tab-btn" onclick="switchTab('produto')">Por Produto</button>
-  <button class="tab-btn" onclick="switchTab('servico')">Por Serviço</button>
   <button class="tab-btn" onclick="switchTab('divisao')">Por Divisão</button>
-  <button class="tab-btn" onclick="switchTab('individual')">Serviços Individuais</button>
+  <button class="tab-btn" onclick="switchTab('bolsas')">Receita por Bolsa</button>
   <button class="tab-btn" onclick="switchTab('clientes')">Análise de Clientes</button>
+  <button class="tab-btn" onclick="switchTab('servico')">Por Serviço</button>
+  <button class="tab-btn" onclick="switchTab('individual')">Serviços Individuais</button>
   <button class="tab-btn" onclick="switchTab('softserv')">Software × Serviço</button>
 </div>
 
@@ -800,10 +801,113 @@
   </div>
 </div>
 
+<!-- TAB: RECEITA POR BOLSA -->
+<div id="tab-bolsas" class="tab-panel">
+
+  <!-- KPIs -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
+    <div class="kpi-card green">
+      <div class="kpi-label">B3 Total (BVSP + BMF)</div>
+      <div class="kpi-value">R$ 1,73M</div>
+      <div class="kpi-sub">10,4% do faturamento · 5.386 usuários</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">Bolsas Internacionais</div>
+      <div class="kpi-value" style="color:var(--accent2)">R$ 795K</div>
+      <div class="kpi-sub">CBOT, CME, ICE, NYSE, Nasdaq e outras</div>
+    </div>
+    <div class="kpi-card orange">
+      <div class="kpi-label">Maior bolsa intl.</div>
+      <div class="kpi-value" style="color:var(--accent3)">R$ 295K</div>
+      <div class="kpi-sub">CBOT — 628 usuários · 276 empresas</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">Prof. Bovespa / BMF</div>
+      <div class="kpi-value" style="color:var(--accent4)">51.522 / 50.679</div>
+      <div class="kpi-sub">Contratos com licença profissional ativa</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-grid" style="margin-bottom:20px">
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Receita por Bolsa — Jun/2026 (R$)</div>
+      <div style="position:relative;height:320px"><canvas id="chartBolsasReceita"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>Usuários por Bolsa</div>
+      <div style="position:relative;height:320px"><canvas id="chartBolsasUsers"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card">
+    <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>Detalhamento por Serviço de Bolsa — Jun/2026</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Bolsa / Serviço</th>
+            <th style="text-align:right">Receita (R$)</th>
+            <th style="text-align:right">% Total Fat.</th>
+            <th style="text-align:right">Usuários</th>
+            <th style="text-align:right">Empresas</th>
+            <th style="text-align:right">Ticket médio</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-bolsas"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Alert CME -->
+  <div style="background:rgba(224,92,92,.08);border:1px solid rgba(224,92,92,.4);border-left:4px solid #E05C5C;border-radius:0 10px 10px 0;padding:14px 18px;margin-top:16px">
+    <div style="font-size:13px;font-weight:700;color:#E05C5C;margin-bottom:6px">⚠️ Atenção — CME/CBOT: nova política para websites públicos (jan/2027)</div>
+    <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.65">A CME comunicou em jul/2026 que a partir de 01/01/2027 dados publicados em websites públicos ficam limitados a <strong>1 atualização/hora/instrumento</strong>. O CBOT é a maior bolsa internacional em receita (R$ 295K · 276 empresas). Call com Matthew Frego (CME) pendente de agendamento.</p>
+  </div>
+
+</div>
+
 <script>
 
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// ── DATA ────────────────────────────────────────────────────────────────────────
 const totalFat = 16820975.04;
+
+// ── DATA BOLSAS ────────────────────────────────────────────────────────────────
+const bolsasData = [
+  { name: 'BM&F Level I (s/ Livro)',        receita: 530622,  users: 3194, empresas: 645,  grupo: 'B3' },
+  { name: 'Bovespa Level I (s/ Livro)',      receita: 470955,  users: 2837, empresas: 483,  grupo: 'B3' },
+  { name: 'BM&F Level II (Livro)',           receita: 366044,  users: 1735, empresas: 508,  grupo: 'B3' },
+  { name: 'Bovespa Level II (Livro)',        receita: 359645,  users: 1756, empresas: 558,  grupo: 'B3' },
+  { name: 'CBOT com Livro',                  receita: 268052,  users: 361,  empresas: 155,  grupo: 'CBOT' },
+  { name: 'NYBOT Full',                      receita: 223297,  users: 254,  empresas: 106,  grupo: 'ICE US' },
+  { name: 'CME/IMM',                         receita: 55004,   users: 70,   empresas: 42,   grupo: 'CME' },
+  { name: 'IPE (Londres)',                   receita: 51024,   users: 51,   empresas: 32,   grupo: 'ICE EU' },
+  { name: 'NYSE',                            receita: 34834,   users: 114,  empresas: 41,   grupo: 'NYSE' },
+  { name: 'CBOT Snapshot',                   receita: 26722,   users: 267,  empresas: 121,  grupo: 'CBOT' },
+  { name: 'Índices FTSE',                    receita: 25336,   users: 148,  empresas: 31,   grupo: 'FTSE' },
+  { name: 'Nasdaq Profissional',             receita: 18775,   users: 93,   empresas: 39,   grupo: 'Nasdaq' },
+  { name: 'NYMEX',                           receita: 17892,   users: 23,   empresas: 18,   grupo: 'CME' },
+  { name: 'Índices Euronext',                receita: 17153,   users: 104,  empresas: 15,   grupo: 'Euronext' },
+  { name: 'Índices S&P',                     receita: 16624,   users: 540,  empresas: 193,  grupo: 'S&P' },
+  { name: 'Índices Nasdaq',                  receita: 14344,   users: 230,  empresas: 65,   grupo: 'Nasdaq' },
+  { name: 'BM&F Wallboard',                  receita: 11668,   users: 10,   empresas: 8,    grupo: 'B3' },
+  { name: 'Bovespa Wallboard',               receita: 13997,   users: 12,   empresas: 10,   grupo: 'B3' },
+  { name: 'NYSE MKT (AMEX)',                 receita: 7707,    users: 38,   empresas: 13,   grupo: 'NYSE' },
+  { name: 'CBOT Wallboard',                  receita: 8441,    users: 3,    empresas: 2,    grupo: 'CBOT' },
+  { name: 'Índices DJ',                      receita: 9072,    users: 431,  empresas: 154,  grupo: 'S&P' },
+];
+
+const grupoReceita = {};
+const grupoUsers = {};
+bolsasData.forEach(b => {
+  grupoReceita[b.grupo] = (grupoReceita[b.grupo] || 0) + b.receita;
+  grupoUsers[b.grupo]   = (grupoUsers[b.grupo]   || 0) + b.users;
+});
+const gruposSorted = Object.entries(grupoReceita).sort((a,b) => b[1]-a[1]);
+
+
+
 
 const softwareData = [
   { name: 'BROADCAST+',                       value: 13757179.20 },
@@ -1108,12 +1212,12 @@ new Chart(document.getElementById('chartDivisaoPie'), {
 
 // ── TABLES ────────────────────────────────────────────────────────────────────
 function buildTable(tbodyId, data, accentIdx) {
-  const maxVal = data[0].value;
-  const tbody = document.getElementById(tbodyId);
+  let maxVal = data[0].value;
+  let tbody = document.getElementById(tbodyId);
   data.forEach((d, i) => {
-    const pct = (d.value / totalFat * 100).toFixed(1);
-    const barW = (d.value / maxVal * 100).toFixed(1);
-    const color = palette[(i + accentIdx) % 20];
+    let pct = (d.value / totalFat * 100).toFixed(1);
+    let barW = (d.value / maxVal * 100).toFixed(1);
+    let color = palette[(i + accentIdx) % 20];
     tbody.innerHTML += `
       <tr>
         <td><span class="rank">${i+1}</span></td>
@@ -1302,13 +1406,13 @@ new Chart(document.getElementById('chartRegMacro'), {
 
 // Base table
 (function(){
-  const maxVal = baseData[0].value;
-  const tbody = document.getElementById('tbl-base');
+  let maxVal = baseData[0].value;
+  let tbody = document.getElementById('tbl-base');
   baseData.forEach((d,i) => {
-    const pct  = (d.value / totalFat * 100).toFixed(1);
-    const barW = (d.value / maxVal * 100).toFixed(1);
-    const color = palette[(i+1)%20];
-    const ticket = d.clientes > 0 ? fmtR(d.value / d.clientes) : '—';
+    let pct = (d.value / totalFat * 100).toFixed(1);
+    let barW = (d.value / maxVal * 100).toFixed(1);
+    let color = palette[(i+1)%20];
+    let ticket = d.clientes > 0 ? fmtR(d.value / d.clientes) : '—';
     tbody.innerHTML += `
       <tr>
         <td><span class="rank">${i+1}</span></td>
@@ -1450,13 +1554,13 @@ new Chart(document.getElementById('chartVendTicket'), {
 
 // Vendedores table
 (function(){
-  const maxVal = vendedoresData[0].value;
-  const tbody = document.getElementById('tbl-vendedores');
+  let maxVal = vendedoresData[0].value;
+  let tbody = document.getElementById('tbl-vendedores');
   vendedoresData.forEach((d,i) => {
-    const pct   = (d.value / totalFat * 100).toFixed(1);
-    const barW  = (d.value / maxVal * 100).toFixed(1);
-    const color = palette[i % 20];
-    const ticket = fmtR(d.value / d.clientes);
+    let pct = (d.value / totalFat * 100).toFixed(1);
+    let barW = (d.value / maxVal * 100).toFixed(1);
+    let color = palette[i % 20];
+    let ticket = fmtR(d.value / d.clientes);
     tbody.innerHTML += `
       <tr>
         <td><span class="rank">${i+1}</span></td>
@@ -1642,12 +1746,12 @@ new Chart(document.getElementById('chartTicket'), {
 
 // Clientes table
 (function() {
-  const maxVal = topClientesData[0].value;
-  const tbody = document.getElementById('tbl-clientes');
+  let maxVal = topClientesData[0].value;
+  let tbody = document.getElementById('tbl-clientes');
   topClientesData.forEach((d, i) => {
-    const pct = (d.value / totalFat * 100).toFixed(1);
-    const barW = (d.value / maxVal * 100).toFixed(1);
-    const color = macroColors[d.macro] || palette[i % 20];
+    let pct = (d.value / totalFat * 100).toFixed(1);
+    let barW = (d.value / maxVal * 100).toFixed(1);
+    let color = macroColors[d.macro] || palette[i % 20];
     const macroTag = `<span style="background:${color}22;color:${color};border:1px solid ${color}55;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap">${d.macro}</span>`;
     tbody.innerHTML += `
       <tr>
@@ -1869,12 +1973,12 @@ new Chart(document.getElementById('chartStackedSoftServ'), {
 
 // Combos table
 (function(){
-  const maxVal = combosData[0].value;
-  const tbody = document.getElementById('tbl-softserv');
+  let maxVal = combosData[0].value;
+  let tbody = document.getElementById('tbl-softserv');
   combosData.forEach((d,i) => {
-    const pct  = (d.value / totalFat * 100).toFixed(1);
-    const barW = (d.value / maxVal * 100).toFixed(1);
-    const color = palette[i%20];
+    let pct = (d.value / totalFat * 100).toFixed(1);
+    let barW = (d.value / maxVal * 100).toFixed(1);
+    let color = palette[i%20];
     tbody.innerHTML += `
       <tr>
         <td><span class="rank">${i+1}</span></td>
@@ -1897,8 +2001,67 @@ new Chart(document.getElementById('chartStackedSoftServ'), {
 function switchTab(id) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
   event.target.classList.add('active');
+  if (id === 'bolsas') renderBolsas();
+}
+
+function renderBolsas() {
+  if (window._bolsasRendered) return;
+  window._bolsasRendered = true;
+
+  const fmtR = v => 'R$ ' + new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0}).format(v);
+  const colors = ['#D4AF37','#3B82F6','#3DBE7B','#E05C5C','#E8A33D','#9B8CF2','#2EC4B6','#F97316','#EC4899'];
+
+  // Chart receita por grupo
+  const labels = gruposSorted.map(g => g[0]);
+  const values = gruposSorted.map(g => g[1]);
+  new Chart(document.getElementById('chartBolsasReceita').getContext('2d'), {
+    type: 'bar', indexAxis: 'y',
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + fmtR(ctx.raw) } } },
+      scales: { x: { grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#8FA3C4', callback: v => 'R$ ' + (v/1000).toFixed(0) + 'K' } },
+                y: { grid: { display: false }, ticks: { color: '#E8EDF6' } } } }
+  });
+
+  // Chart usuarios por grupo
+  const usersData = gruposSorted.map(g => grupoUsers[g[0]] || 0);
+  new Chart(document.getElementById('chartBolsasUsers').getContext('2d'), {
+    type: 'bar', indexAxis: 'y',
+    data: { labels, datasets: [{ data: usersData, backgroundColor: colors.map(c => c + 'BB'), borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + ctx.raw.toLocaleString('pt-BR') + ' usuários' } } },
+      scales: { x: { grid: { color: 'rgba(255,255,255,.06)' }, ticks: { color: '#8FA3C4' } },
+                y: { grid: { display: false }, ticks: { color: '#E8EDF6' } } } }
+  });
+
+  // Table
+  let tbody = document.getElementById('tbl-bolsas');
+  const sorted = [...bolsasData].sort((a,b) => b.receita - a.receita);
+  const totRec = sorted.reduce((s,b) => s+b.receita, 0);
+  sorted.forEach(b => {
+    let ticket = b.empresas > 0 ? b.receita / b.empresas : 0;
+    tbody.innerHTML += `<tr>
+      <td>${b.name} <span style="font-size:10px;opacity:.6;margin-left:4px">${b.grupo}</span></td>
+      <td style="text-align:right;font-weight:600">${fmtR(b.receita)}</td>
+      <td style="text-align:right;color:#8FA3C4">${(b.receita/totalFat*100).toFixed(2)}%</td>
+      <td style="text-align:right">${b.users.toLocaleString('pt-BR')}</td>
+      <td style="text-align:right">${b.empresas}</td>
+      <td style="text-align:right;color:#D4AF37">${fmtR(ticket)}</td>
+    </tr>`;
+  });
+  // Total row
+  const totUsers = sorted.reduce((s,b)=>s+b.users,0);
+  const totEmp = new Set(sorted.flatMap(b=>Array(b.empresas).fill(0))).size;
+  tbody.innerHTML += `<tr style="font-weight:700;border-top:2px solid var(--accent)">
+    <td>TOTAL BOLSAS</td>
+    <td style="text-align:right">${fmtR(totRec)}</td>
+    <td style="text-align:right">${(totRec/totalFat*100).toFixed(1)}%</td>
+    <td style="text-align:right">${totUsers.toLocaleString('pt-BR')}</td>
+    <td style="text-align:right">—</td>
+    <td style="text-align:right">—</td>
+  </tr>`;
 }
 
 // ── DARK / LIGHT TOGGLE ───────────────────────────────────────────────────────
