@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De onde vem cada informação de um fundo · Base de Fundos AE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --page:        #f2f0ec;
+    --sheet:       #ffffff;
+    --border:      #ece9e3;
+    --divider:     #f0ede8;
+    --ink:         #2f363d;
+    --ink-soft:    #6a747e;
+    --ink-mute:    #aab1b8;
+    --label:       #b3b9bf;
+    --cvm:         #bd7d3c;
+    --anbima:      #5c9070;
+    --ae:          #8a79a6;
+    --cvm-tint:    #fbf5ec;
+    --anbima-tint: #f0f6f2;
+    --shadow:      0 1px 2px rgba(40,44,50,.04), 0 12px 40px rgba(40,44,50,.06);
+  }
+  html[data-theme="dark"] {
+    --page:        #14171c;
+    --sheet:       #1b1f26;
+    --border:      #2a3038;
+    --divider:     #242a32;
+    --ink:         #e9ecf0;
+    --ink-soft:    #a5adb6;
+    --ink-mute:    #6b747d;
+    --label:       #79828b;
+    --cvm:         #d69b58;
+    --anbima:      #77b090;
+    --ae:          #a998c6;
+    --cvm-tint:    rgba(214,155,88,.09);
+    --anbima-tint: rgba(119,176,144,.09);
+    --shadow:      0 1px 2px rgba(0,0,0,.25), 0 18px 50px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    padding: 40px 20px 80px;
+    transition: background .35s ease, color .35s ease;
+  }
+  .sheet {
+    max-width: 860px; margin: 0 auto;
+    background: var(--sheet);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: background .35s ease, border-color .35s ease;
+  }
+  .pad { padding: 0 clamp(28px, 6vw, 64px); }
+
+  /* ---- mast ---- */
+  .mast {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 26px clamp(28px,6vw,64px) 22px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .brand { display: flex; flex-direction: column; line-height: 1; }
+  .brand .word { font-weight: 800; font-size: 22px; letter-spacing: -.5px; color: #1b6fb3; }
+  html[data-theme="dark"] .brand .word { color: #64a9df; }
+  .brand .tag { font-size: 8.5px; letter-spacing: 2px; color: var(--ink-mute); margin-top: 4px; font-weight: 600; }
+  .recip { text-align: right; font-size: 11px; color: var(--ink-mute); line-height: 1.5; }
+
+  .toggle {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--ink-soft); border-radius: 100px;
+    padding: 7px 13px; font-size: 10.5px; letter-spacing: 1px; font-weight: 600;
+    cursor: pointer; transition: all .2s ease; white-space: nowrap;
+  }
+  .toggle:hover { border-color: var(--ink-soft); color: var(--ink); }
+
+  /* ---- hero ---- */
+  .hero { padding: 52px 0 8px; }
+  .eyebrow {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--label); font-weight: 600; margin-bottom: 26px;
+  }
+  h1 {
+    font-weight: 300; font-size: clamp(34px, 5.4vw, 52px);
+    line-height: 1.08; letter-spacing: -.8px; color: var(--ink-soft);
+  }
+  .sub {
+    margin-top: 22px; max-width: 560px;
+    font-size: 17px; font-weight: 300; color: var(--ink-soft);
+  }
+  .sub .c-cvm { color: var(--cvm); font-weight: 600; }
+  .sub .c-anb { color: var(--anbima); font-weight: 600; }
+  .sub .c-ae  { color: var(--ae); font-weight: 600; }
+
+  /* ---- source cards ---- */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 44px 0 8px; }
+  .card {
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px 26px 22px; background: var(--sheet);
+  }
+  .card.cvm    { background: var(--cvm-tint); border-color: color-mix(in srgb, var(--cvm) 22%, var(--border)); }
+  .card.anbima { background: var(--anbima-tint); border-color: color-mix(in srgb, var(--anbima) 22%, var(--border)); }
+  .card h3 { font-size: 20px; font-weight: 700; letter-spacing: .3px; }
+  .card.cvm h3    { color: var(--cvm); }
+  .card.anbima h3 { color: var(--anbima); }
+  .card .role { font-size: 12px; color: var(--ink-mute); font-weight: 500; margin: 3px 0 13px; }
+  .card p { font-size: 14px; color: var(--ink-soft); font-weight: 400; }
+  .card p b { color: var(--ink); font-weight: 600; }
+
+  /* ---- section label + panel ---- */
+  section { margin-top: 40px; }
+  .label {
+    font-size: 13px; color: var(--label); font-weight: 500;
+    margin: 0 2px 12px; letter-spacing: .2px;
+  }
+  .panel { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .row {
+    display: grid; grid-template-columns: 250px 128px 1fr;
+    gap: 20px; align-items: baseline;
+    padding: 15px 24px; border-top: 1px solid var(--divider);
+  }
+  .row:first-child { border-top: none; }
+  .field { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+  .field .sub2 { display: block; font-size: 11.5px; font-weight: 400; color: var(--ink-mute); margin-top: 1px; }
+
+  .tag { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; white-space: nowrap; }
+  .tag.cvm { color: var(--cvm); }
+  .tag.anbima { color: var(--anbima); }
+  .tag.ae { color: var(--ae); }
+  .tag .arw { color: var(--ink-mute); font-weight: 500; margin: 0 3px; }
+  .tag .t-cvm { color: var(--cvm); }
+  .tag .t-anb { color: var(--anbima); }
+
+  .note { font-size: 13.5px; color: var(--ink-soft); font-weight: 400; }
+  .note.dash { color: var(--ink-mute); }
+
+  /* legend rows a touch different: full-width note */
+  .legend .row { grid-template-columns: 128px 1fr; }
+
+  /* banner for descrição */
+  .banner {
+    background: var(--cvm-tint); border: 1px solid color-mix(in srgb, var(--cvm) 22%, var(--border));
+    border-radius: 10px; padding: 14px 18px; margin-bottom: 12px;
+    font-size: 13.5px; color: var(--ink-soft);
+  }
+  .banner b { color: var(--cvm); font-weight: 600; }
+
+  /* ---- footer ---- */
+  .foot {
+    margin-top: 8px; padding: 22px clamp(28px,6vw,64px) 30px;
+    border-top: 1px solid var(--divider);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; color: var(--ink-mute); letter-spacing: .3px;
+  }
+  .foot b { color: var(--ink-soft); font-weight: 600; }
+
+  @media (max-width: 680px) {
+    .cards { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 1fr; gap: 5px; padding: 15px 18px; }
+    .legend .row { grid-template-columns: 1fr; }
+    .recip { display: none; }
+    .foot { flex-direction: column; gap: 6px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- MAST -->
+  <div class="mast">
+    <div class="brand">
+      <span class="word">ESTADÃO</span>
+      <span class="tag">VEM PENSAR COM A GENTE</span>
+    </div>
+    <button class="toggle" onclick="toggleTheme()" id="tgl">MODO ESCURO</button>
+  </div>
+
+  <div class="pad">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="eyebrow">Agência Estado · Base de Fundos</div>
+      <h1>De onde vem cada<br>informação de um fundo</h1>
+      <p class="sub">Guia rápido: o que é fornecido pela <span class="c-cvm">CVM</span>, o que vem da <span class="c-anb">ANBIMA</span> e o que é calculado pelo próprio <span class="c-ae">AE</span>.</p>
+    </div>
+
+    <!-- SOURCE CARDS -->
+    <div class="cards">
+      <div class="card cvm">
+        <h3>CVM</h3>
+        <div class="role">O órgão regulador</div>
+        <p>Traz o lado <b>oficial e documental</b>: o registro do fundo, a situação cadastral, quem são os responsáveis e todo o conteúdo descritivo da lâmina.</p>
+      </div>
+      <div class="card anbima">
+        <h3>ANBIMA</h3>
+        <div class="role">A associação do mercado</div>
+        <p>Traz o lado <b>de mercado</b>: como o fundo é classificado, para quem ele é vendido, quais taxas estão valendo hoje e o histórico de cotas.</p>
+      </div>
+    </div>
+
+    <!-- LEGEND -->
+    <section class="legend">
+      <div class="label">Como ler as tabelas</div>
+      <div class="panel">
+        <div class="row"><span class="tag cvm">CVM</span><span class="note">Só a CVM tem essa informação.</span></div>
+        <div class="row"><span class="tag anbima">ANBIMA</span><span class="note">Só a ANBIMA tem essa informação.</span></div>
+        <div class="row"><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note">As duas têm. <b>Usamos a da CVM</b>; a da ANBIMA entra só se a CVM não informar.</span></div>
+        <div class="row"><span class="tag"><span class="t-anb">ANBIMA</span><span class="arw">→</span><span class="t-cvm">CVM</span></span><span class="note">As duas têm, mas a <b>ANBIMA tem prioridade</b>; a CVM só preenche as lacunas.</span></div>
+        <div class="row"><span class="tag"><span class="t-cvm">CVM</span><span class="arw">+</span><span class="t-anb">ANBIMA</span></span><span class="note">As duas <b>se somam</b> — nada é descartado.</span></div>
+        <div class="row"><span class="tag ae">AE</span><span class="note">Não vem de fora — é calculado pelo nosso sistema.</span></div>
+      </div>
+    </section>
+
+    <!-- 1 -->
+    <section>
+      <div class="label">Identificação do fundo</div>
+      <div class="panel">
+        <div class="row"><span class="field">CNPJ</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note">É também o que liga as duas bases entre si.</span></div>
+        <div class="row"><span class="field">Código ANBIMA</span><span class="tag anbima">ANBIMA</span><span class="note">É a chave principal do fundo na nossa base.</span></div>
+        <div class="row"><span class="field">Código CVM</span><span class="tag cvm">CVM</span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Códigos internos<span class="sub2">Código AE, BCSYS e ticker</span></span><span class="tag ae">AE</span><span class="note">Gerados a partir do código ANBIMA, para uso nos nossos produtos.</span></div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section>
+      <div class="label">Nome do fundo</div>
+      <div class="panel">
+        <div class="row"><span class="field">Nome comercial</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note">O nome que aparece para o investidor. Vem primeiro da lâmina da CVM.</span></div>
+        <div class="row"><span class="field">Razão social</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note">O nome jurídico, do registro oficial.</span></div>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section>
+      <div class="label">Que tipo de fundo é</div>
+      <div class="panel">
+        <div class="row"><span class="field">Categoria ANBIMA<span class="sub2">3 níveis de classificação</span></span><span class="tag anbima">ANBIMA</span><span class="note">A classificação mais usada no mercado (ex.: Renda Fixa → Duração Livre → Crédito Livre).</span></div>
+        <div class="row"><span class="field">Tipo ANBIMA</span><span class="tag anbima">ANBIMA</span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Tipo CVM</span><span class="tag cvm">CVM</span><span class="note">A classificação regulatória (ex.: FI, FIC, FIDC).</span></div>
+        <div class="row"><span class="field">Foco de atuação</span><span class="tag anbima">ANBIMA</span><span class="note dash">—</span></div>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section>
+      <div class="label">Quem cuida do fundo</div>
+      <div class="panel">
+        <div class="row"><span class="field">Administrador · Gestor</span><span class="tag cvm">CVM</span><span class="note">Do registro oficial do fundo.</span></div>
+        <div class="row"><span class="field">Auditor · Custodiante · Controlador</span><span class="tag cvm">CVM</span><span class="note">Do registro da classe do fundo.</span></div>
+        <div class="row"><span class="field">Lista completa de prestadores de serviço</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">+</span><span class="t-anb">ANBIMA</span></span><span class="note">As duas fontes se somam: guardamos todos os prestadores das duas listas, sem descartar nenhum.</span></div>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section>
+      <div class="label">Situação e datas</div>
+      <div class="panel">
+        <div class="row"><span class="field">Situação cadastral<span class="sub2">em funcionamento, cancelado…</span></span><span class="tag cvm">CVM</span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Fundo ativo ou não</span><span class="tag ae">AE</span><span class="note">Definido pela existência de data de cancelamento.</span></div>
+        <div class="row"><span class="field">Início de atividade</span><span class="tag anbima">ANBIMA</span><span class="note">Quando o fundo começou a operar.</span></div>
+        <div class="row"><span class="field">Encerramento</span><span class="tag anbima">ANBIMA</span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Cancelamento</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Exercício social</span><span class="tag cvm">CVM</span><span class="note">Datas de início e fim do ano contábil.</span></div>
+        <div class="row"><span class="field">Primeira cotação</span><span class="tag ae">AE</span><span class="note">A data mais antiga com cota na nossa base.</span></div>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section>
+      <div class="label">Características do fundo</div>
+      <div class="panel">
+        <div class="row"><span class="field">Fundo aberto ou fechado</span><span class="tag anbima">ANBIMA</span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Fundo exclusivo</span><span class="tag anbima">ANBIMA</span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Tipo de investidor<span class="sub2">qualificado, profissional, geral</span></span><span class="tag anbima">ANBIMA</span><span class="note">Para quem o fundo pode ser vendido.</span></div>
+        <div class="row"><span class="field">Fundo de cotas</span><span class="tag cvm">CVM</span><span class="note">Se o fundo investe em outros fundos.</span></div>
+        <div class="row"><span class="field">Tributação de longo prazo</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Entidade de investimento</span><span class="tag cvm">CVM</span><span class="note dash">—</span></div>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section>
+      <div class="label">Custos para o investidor</div>
+      <div class="panel">
+        <div class="row"><span class="field">Taxa de administração</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note">A taxa praticada.</span></div>
+        <div class="row"><span class="field">Taxa de administração máxima e vigência</span><span class="tag anbima">ANBIMA</span><span class="note">O teto permitido e desde quando vale. Só a ANBIMA informa.</span></div>
+        <div class="row"><span class="field">Taxa de performance</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note">Inclui o indicador de se existe ou não taxa.</span></div>
+        <div class="row"><span class="field">Taxa de entrada · Taxa de saída</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note dash">—</span></div>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section>
+      <div class="label">Aplicação e resgate</div>
+      <div class="panel">
+        <div class="row"><span class="field">Valores mínimos<span class="sub2">aplicação inicial, adicional, resgate e permanência</span></span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note">Existindo lâmina da CVM, o grupo inteiro vem dela.</span></div>
+        <div class="row"><span class="field">Prazo de carência</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Prazo de conversão no resgate</span><span class="tag"><span class="t-cvm">CVM</span><span class="arw">→</span><span class="t-anb">ANBIMA</span></span><span class="note">Quantos dias até a cota ser calculada.</span></div>
+        <div class="row"><span class="field">Prazo de pagamento do resgate</span><span class="tag anbima">ANBIMA</span><span class="note">Quantos dias até o dinheiro cair na conta.</span></div>
+        <div class="row"><span class="field">Horário-limite para aplicar e resgatar</span><span class="tag cvm">CVM</span><span class="note dash">—</span></div>
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section>
+      <div class="label">Descrição do fundo — tudo vem da CVM</div>
+      <div class="banner">Todo o texto que descreve o fundo sai da <b>Lâmina de Informações Essenciais</b>, um documento obrigatório da CVM. A ANBIMA não fornece nada disso.</div>
+      <div class="panel">
+        <div class="row"><span class="field">Objetivo do fundo</span><span class="tag cvm">CVM</span><span class="note">O que o fundo se propõe a fazer.</span></div>
+        <div class="row"><span class="field">Público-alvo</span><span class="tag cvm">CVM</span><span class="note dash">—</span></div>
+        <div class="row"><span class="field">Política de investimento</span><span class="tag cvm">CVM</span><span class="note">Em texto, mais uma tabela com os limites: exterior, crédito privado, alavancagem, concentração e uso de derivativos.</span></div>
+        <div class="row"><span class="field">Composição da carteira</span><span class="tag cvm">CVM</span><span class="note">Onde o dinheiro está aplicado.</span></div>
+        <div class="row"><span class="field">Classificação de risco</span><span class="tag cvm">CVM</span><span class="note">Atribuída pelo administrador.</span></div>
+        <div class="row"><span class="field">Total de despesas</span><span class="tag cvm">CVM</span><span class="note dash">—</span></div>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section>
+      <div class="label">Cotas e rentabilidade</div>
+      <div class="panel">
+        <div class="row"><span class="field">Benchmark<span class="sub2">índice de referência</span></span><span class="tag anbima">ANBIMA</span><span class="note">Ex.: CDI, IPCA. Só a ANBIMA informa.</span></div>
+        <div class="row"><span class="field">Cotas diárias<span class="sub2">valor da cota, patrimônio, captação, resgates, cotistas</span></span><span class="tag"><span class="t-anb">ANBIMA</span><span class="arw">→</span><span class="t-cvm">CVM</span></span><span class="note">A ANBIMA tem prioridade. A cota da CVM só é usada nos dias em que a ANBIMA não informou nada, para não deixar buracos no histórico.</span></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <span><b>Base de Fundos</b> · Agência Estado — mapeamento de proveniência de dados</span>
+    <span>Última atualização: 30/07/2026</span>
+  </div>
+</div>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const dark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', dark ? 'light' : 'dark');
+    document.getElementById('tgl').textContent = dark ? 'MODO ESCURO' : 'MODO CLARO';
+  }
+</script>
+</body>
+</html>
